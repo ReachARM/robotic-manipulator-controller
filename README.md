@@ -13,7 +13,7 @@ The requirements for this project are :
 ### Version
 0.0.1
 
-### Tech
+### Libraries, Tools and other tech stuff
 
 This project uses the following libraries or tools : 
 
@@ -50,4 +50,6 @@ License
 ----
 To Be Determined...
 
-
+### Links
+* Robot Operating System : ros.org
+* ROBOTIS support : http://support.robotis.com/en/software/dynamixel_sdk/usb2dynamixel/usb2dxl_linux.htm
