@@ -1,2 +1,0 @@
-ArmController
--DCATKIN_DEVEL_PREFIX=/home/mojo/arm_control_workspace/devel -DCMAKE_INSTALL_PREFIX=/home/mojo/arm_control_workspace/install -G Unix Makefiles

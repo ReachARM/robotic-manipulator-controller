@@ -1,8 +1,0 @@
-prefix=/home/mojo/arm_control_workspace/devel
-
-Name: ArmController
-Description: Description of ArmController
-Version: 0.0.0
-Cflags: -I/home/mojo/arm_control_workspace/devel/include
-Libs: -L/home/mojo/arm_control_workspace/devel/lib 
-Requires: roscpp std_msgs
