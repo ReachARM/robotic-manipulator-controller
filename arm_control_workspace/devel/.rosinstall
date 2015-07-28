@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/mojo/arm_control_workspace/devel/setup.sh
