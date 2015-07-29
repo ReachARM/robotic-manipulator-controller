@@ -72,7 +72,7 @@ private :
     static const int MOVING_SPEED_L = 32;
     static const int MOVING_SPEED_H = 33;
 
-    static constexpr float STEP_PRECISION = 0.3000;
+    static constexpr float STEP_PRECISION = 0.3500;
 
     static const int MAX_RPM_SPEED = 114;
 

@@ -61,6 +61,11 @@ private:
     __uint8_t currentState;
     const int NO_ERROR;
 
+    const int BASE_START_POSITION;
+    const int SHOULDER_START_POSITION;
+    const int ELBOW_START_POSITION;
+    const int WRIST_START_POSITION;
+
     // Reset the currentState to NO_ERROR
     // Used to clean error state;
     inline void resetError();
