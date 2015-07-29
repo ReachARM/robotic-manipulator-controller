@@ -38,6 +38,14 @@ public:
 
     };
 
+    enum ERROR{
+        NO_ERROR,
+        BASE_ERROR,
+        SHOULDER_ERROR,
+        ELBOW_ERROR,
+        WRIST_ERROR
+    };
+
     inline __uint8_t getCurrentArmStatus()const;
 
     inline float getMotorCurrentAngle(const MOTOR_ID& motor)const;
@@ -58,8 +66,7 @@ private:
     std::tr1::shared_ptr<Motor> base, shoulder, elbow, wrist;
 
     // Current State
-    __uint8_t currentState;
-    const int NO_ERROR;
+    ERROR currentState;
 
     const int BASE_START_POSITION;
     const int SHOULDER_START_POSITION;

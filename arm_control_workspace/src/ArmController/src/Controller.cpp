@@ -9,8 +9,7 @@ Controller::Controller()
  shoulder(std::tr1::shared_ptr<Motor>(new Motor(static_cast<__uint8_t>(SHOULDER_ID),185,700))),
  elbow(std::tr1::shared_ptr<Motor>(new Motor(static_cast<__uint8_t>(ELBOW_ID),171,714))),
  wrist(std::tr1::shared_ptr<Motor>(new Motor(static_cast<__uint8_t>(WRIST_ID)))),
- NO_ERROR(0),
- currentState(0),
+ currentState(NO_ERROR),
  BASE_START_POSITION(70),
  SHOULDER_START_POSITION(177),
  ELBOW_START_POSITION(177),
@@ -25,12 +24,23 @@ Controller::Controller()
 
     if( base->isOpened())
         base->setCurrentAngle(BASE_START_POSITION);
+    else
+        currentState = BASE_ERROR;
+
     if( shoulder->isOpened())
         shoulder->setCurrentAngle(SHOULDER_START_POSITION);
+    else
+        currentState = SHOULDER_ERROR;
+
     if( elbow->isOpened())
         elbow->setCurrentAngle(ELBOW_START_POSITION);
+    else
+        currentState = ELBOW_ERROR;
+
     if( wrist->isOpened())
         wrist->setCurrentAngle(WRIST_START_POSITION);
+    else
+        currentState = WRIST_ERROR;
 
 }
 
@@ -49,12 +59,22 @@ bool Controller::moveAbsoluteMotor(const Controller::MOTOR_ID& motor, const floa
         ROS_WARN("Motor ID is no within boundaries");
         return false;
     }
-    getMotor(motor)->setCurrentAngle(targetAngle);
+    if(getMotor(motor)->isOpened())
+        getMotor(motor)->setCurrentAngle(targetAngle);
+    else {
+        ROS_WARN("Cannot move target motor : The motor is closed.");
+        return false;
+    }
     return true;
 }
 
 bool Controller::moveRelativeTool(const float tX, const float tY, const float tZ,
                                   const float roll, const float pitch, const float yaw) {
+    if( currentState == NO_ERROR ){
+
+    } else {
+        ROS_WARN("Cannot move tool, error code : %d", currentState);
+    }
     return false;
 }
 
