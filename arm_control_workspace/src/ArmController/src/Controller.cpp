@@ -6,8 +6,8 @@
 
 Controller::Controller()
 :base(std::tr1::shared_ptr<Motor>(new Motor(static_cast<__uint8_t >(BASE_ID),0,1020))),
- shoulder(std::tr1::shared_ptr<Motor>(new Motor(static_cast<__uint8_t>(SHOULDER_ID),185,700))),
- elbow(std::tr1::shared_ptr<Motor>(new Motor(static_cast<__uint8_t>(ELBOW_ID),171,714))),
+ shoulder(std::tr1::shared_ptr<Motor>(new Motor(static_cast<__uint8_t>(SHOULDER_ID),185,770))),
+ elbow(std::tr1::shared_ptr<Motor>(new Motor(static_cast<__uint8_t>(ELBOW_ID),171,770))),
  wrist(std::tr1::shared_ptr<Motor>(new Motor(static_cast<__uint8_t>(WRIST_ID)))),
  currentState(NO_ERROR),
  BASE_START_POSITION(70),
@@ -68,10 +68,11 @@ bool Controller::moveAbsoluteMotor(const Controller::MOTOR_ID& motor, const floa
     return true;
 }
 
+// TODO Comment this section
 bool Controller::moveRelativeTool(const float tX, const float tY, const float tZ,
                                   const float roll, const float pitch, const float yaw) {
     if( currentState == NO_ERROR ){
-
+        // move the robot
     } else {
         ROS_WARN("Cannot move tool, error code : %d", currentState);
     }
