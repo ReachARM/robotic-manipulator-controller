@@ -75,6 +75,7 @@ private :
     static constexpr float STEP_PRECISION = 0.3500;
 
     static const int MAX_RPM_SPEED = 114;
+    static const int BONDING_BOX_SIZE_FOR_INITIALIZATION = 10; // +/- 10 degrees at init is allowed
 
     // Dynamixel controlling values
     int speedRpmLimit;
