@@ -48,7 +48,7 @@ Readme files are included in the packages with the installation instruction from
 
 License
 ----
-To Be Determined...
+MIT
 
 ### Links
 * Robot Operating System : ros.org
