@@ -1,14 +1,19 @@
-//
-// Created by mojo on 03/06/15.
-//
+/**
+ * \file        Controller.cpp
+ * \author      Karl Ritchie <ritchie.karl@gmail.com>
+ * \date        16/07/2015 - dd/mm/yyyy
+ * \copyrights  Copyright (c) 2015 Karl Ritchie. All rights reserved.
+ *              Use of this source code is governed by the MIT license that can be
+ *              found in the LICENSE file.
+ */
 
 #include "Controller.h"
 
 Controller::Controller()
-:base(std::tr1::shared_ptr<Motor>(new Motor(static_cast<__uint8_t >(BASE_ID),0,1020))),
- shoulder(std::tr1::shared_ptr<Motor>(new Motor(static_cast<__uint8_t>(SHOULDER_ID),185,770))),
- elbow(std::tr1::shared_ptr<Motor>(new Motor(static_cast<__uint8_t>(ELBOW_ID),171,770))),
- wrist(std::tr1::shared_ptr<Motor>(new Motor(static_cast<__uint8_t>(WRIST_ID)))),
+:base(std::make_unique<Motor>(static_cast<__uint8_t >(BASE_ID),0,1020)),
+ shoulder(std::make_unique<Motor>(static_cast<__uint8_t>(SHOULDER_ID),185,770)),
+ elbow(std::make_unique<Motor>(static_cast<__uint8_t>(ELBOW_ID),171,770)),
+ wrist(std::make_unique<Motor>(static_cast<__uint8_t>(WRIST_ID),0,0)),
  currentState(NO_ERROR),
  BASE_START_POSITION(70),
  SHOULDER_START_POSITION(177),

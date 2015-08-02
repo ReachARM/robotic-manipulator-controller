@@ -1,6 +1,11 @@
-//
-// Created by mojo on 03/06/15.
-//
+/**
+ * \file        Controller.h
+ * \author      Karl Ritchie <ritchie.karl@gmail.com>
+ * \date        16/07/2015 - dd/mm/yyyy
+ * \copyrights  Copyright (c) 2015 Karl Ritchie. All rights reserved.
+ *              Use of this source code is governed by the MIT license that can be
+ *              found in the LICENSE file.
+ */
 
 #ifndef ARMCONTROLLER_CONTROLLER_H
 #define ARMCONTROLLER_CONTROLLER_H
@@ -9,7 +14,7 @@
 #include "../Motor/Motor.h"
 #include "ros/ros.h"
 
-#include <tr1/memory>
+#include "../util/Pointers.h"
 
 class Controller {
 
@@ -63,7 +68,7 @@ private:
     Controller(const Controller&);
 
     // The Motors
-    std::tr1::shared_ptr<Motor> base, shoulder, elbow, wrist;
+    std::unique_ptr<Motor> base, shoulder, elbow, wrist;
 
     // Current State
     ERROR currentState;

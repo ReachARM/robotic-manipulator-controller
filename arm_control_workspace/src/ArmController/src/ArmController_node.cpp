@@ -1,6 +1,11 @@
-//
-// Created by mojo on 16/06/15.
-//
+/**
+ * \file        ArmController_node.cpp
+ * \author      Karl Ritchie <ritchie.karl@gmail.com>
+ * \date        27/07/2015 - dd/mm/yyyy
+ * \copyrights  Copyright (c) 2015 Karl Ritchie. All rights reserved.
+ *              Use of this source code is governed by the MIT license that can be
+ *              found in the LICENSE file.
+ */
 
 
 #include "RosServiceManager.h"

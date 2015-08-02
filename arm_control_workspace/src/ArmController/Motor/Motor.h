@@ -1,6 +1,11 @@
-//
-// Created by mojo on 01/06/15.
-//
+/**
+ * \file        Motor.h
+ * \author      Karl Ritchie <ritchie.karl@gmail.com>
+ * \date        16/07/2015 - dd/mm/yyyy
+ * \copyrights  Copyright (c) 2015 Karl Ritchie. All rights reserved.
+ *              Use of this source code is governed by the MIT license that can be
+ *              found in the LICENSE file.
+ */
 
 #ifndef ARMCONTROLLER_MOTOR_H
 #define ARMCONTROLLER_MOTOR_H
