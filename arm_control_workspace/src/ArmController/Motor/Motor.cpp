@@ -28,7 +28,7 @@ Motor::~Motor() {
 
 void Motor::initializeMotor(){
     // Check if current angle is within limits
-    float currentAngle = getCurrentAngle();
+    auto currentAngle = getCurrentAngle();
     if(currentAngle!=-1) {
         ROS_INFO("Motor:%d at current Angle: %f", motor_id, currentAngle);
         if( currentAngle < (lowStepLimit*STEP_PRECISION-BONDING_BOX_SIZE_FOR_INITIALIZATION) || currentAngle > (highStepLimit*STEP_PRECISION+BONDING_BOX_SIZE_FOR_INITIALIZATION) ) {

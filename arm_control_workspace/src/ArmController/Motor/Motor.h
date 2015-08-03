@@ -66,28 +66,28 @@ private :
     // L : Low byte
     // H : high byte
     // A word adress is 16 bits (i.e. composed of a L and H byte)
-    static const int CW_ANGLE_LIMIT_L = 6;
-    static const int CW_ANGLE_LIMIT_H = 7;
-    static const int CCW_ANGLE_LIMIT_L = 8;
-    static const int CCW_ANGLE_LIMIT_H = 9;
-    static const int GOAL_POSITION_L = 30;
-    static const int GOAL_POSITION_H = 31;
-    static const int PRESENT_POSITION_L = 36;
-    static const int PRESENT_POSITION_H = 37;
-    static const int MOVING_SPEED_L = 32;
-    static const int MOVING_SPEED_H = 33;
+    static const auto CW_ANGLE_LIMIT_L = 6;
+    static const auto CW_ANGLE_LIMIT_H = 7;
+    static const auto CCW_ANGLE_LIMIT_L = 8;
+    static const auto CCW_ANGLE_LIMIT_H = 9;
+    static const auto GOAL_POSITION_L = 30;
+    static const auto GOAL_POSITION_H = 31;
+    static const auto PRESENT_POSITION_L = 36;
+    static const auto PRESENT_POSITION_H = 37;
+    static const auto MOVING_SPEED_L = 32;
+    static const auto MOVING_SPEED_H = 33;
 
-    static constexpr float STEP_PRECISION = 0.3500;
+    static constexpr auto STEP_PRECISION = 0.3500;
 
-    static const int MAX_RPM_SPEED = 114;
-    static const int BONDING_BOX_SIZE_FOR_INITIALIZATION = 10; // +/- 10 degrees at init is allowed
+    static const auto MAX_RPM_SPEED = 114;
+    static const auto BONDING_BOX_SIZE_FOR_INITIALIZATION = 10; // +/- 10 degrees at init is allowed
 
     // Dynamixel controlling values
     int speedRpmLimit;
     int highStepLimit;
     int lowStepLimit;
     int defaultBaudrate;
-    int motor_id;
+    __uint8_t motor_id;
 
     // status
     bool opened;
@@ -98,7 +98,7 @@ private :
 
 inline void Motor::halt() {
     if( opened ) {
-        int current = dxl_read_word(motor_id, PRESENT_POSITION_L);
+        auto current = dxl_read_word(motor_id, PRESENT_POSITION_L);
         dxl_write_word(motor_id, GOAL_POSITION_L, current);
     } else {
         ROS_WARN("Motor:%d is not opened", motor_id);
@@ -151,8 +151,8 @@ inline int Motor::getCurrentSpeed() const {
 }
 
 inline float Motor::getCurrentAngle() const {
-    __uint16_t  angleRead = dxl_read_word(motor_id, PRESENT_POSITION_L);
-    float current_angle = static_cast<float>(dxl_read_word(motor_id, PRESENT_POSITION_L)) * STEP_PRECISION;
+    auto  angleRead = dxl_read_word(motor_id, PRESENT_POSITION_L);
+    auto current_angle = static_cast<float>(dxl_read_word(motor_id, PRESENT_POSITION_L)) * STEP_PRECISION;
     if( dxl_get_result() == COMM_RXSUCCESS ) {
         return current_angle;
     } else {
