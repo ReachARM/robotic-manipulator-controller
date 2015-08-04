@@ -9,9 +9,8 @@ The requirements for this project are :
   - Real-time control of the axis by the vehicle control system.
 
 
-
 ### Version
-0.0.1
+0.0.2
 
 ### Libraries, Tools and other tech stuff
 
@@ -24,6 +23,7 @@ This project uses the following libraries or tools :
 * [ROS] - Robot operating system.
 * [rViz] - Vizualisation app used to test the kinematic equations.
 * [URDF] - XML based descriptive file of the robot model used by rViz.
+* [MATLAB] - Computing language used for modeling of kinematics equations.
 
 You can find the project at [robotic-manipulator-controller](https://github.com/kritchie/robotic-manipulator-controller) on GitHub.
 
@@ -45,6 +45,8 @@ Readme files are included in the packages with the installation instruction from
  - Comment code and add tutorial
  - Calculate kinematics equations and integrate them into the controller
  - *C++11* and *C++14* migration
+ - Add a controlling device (gamepad?, wiimote?)
+
 
 License
 ----
