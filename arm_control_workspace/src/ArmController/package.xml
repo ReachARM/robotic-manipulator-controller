@@ -3,8 +3,8 @@
   <name>ArmController</name>
   <version>0.0.0</version>
   <description>The ArmController package</description>
-  <maintainer email="mojo@todo.todo">mojo</maintainer>
-  <license>TODO</license>
+  <maintainer email="ritchie.karl@gmail.com">Karl Ritchie</maintainer>
+  <license>MIT</license>
   <build_depend>message_generation</build_depend>
   <run_depend>message_runtime</run_depend>
   <buildtool_depend>catkin</buildtool_depend>
