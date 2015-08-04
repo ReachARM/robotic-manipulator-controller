@@ -1,0 +1,4 @@
+<launch>
+	<arg name="model" />
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find urdf_tutorial)/urdf.rviz" required="true" />
+</launch>

@@ -1,4 +1,4 @@
 #!/bin/bash
 
 export ROS_MASTER_URI=http://127.0.0.1:11311
-roslaunch urdf_tutorial display.launch model:=robot.urdf
+roslaunch robot_viz.launch model:=robot.urdf

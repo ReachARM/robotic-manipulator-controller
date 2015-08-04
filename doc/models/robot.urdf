@@ -1,28 +1,19 @@
 <robot name="gpa546">
 	<link name="base_link">
-		<visual>
-			<origin xyz="0 0 0" rpy="0 0 0" />
-		</visual>
 	</link>
 
 
 	<!-- JOINT2 -->
 	<link name="joint_1">
-		<visual>
-			<origin xyz="0 0 0" rpy="0 0 0" />
-		</visual>
 	</link>
 	<joint name="joint_piece1" type="fixed">
 		<parent link="base_link"/>
 		<child link="joint_1"/>
-		<origin xyz="0 0 0.4" rpy="0 0 0"/>
+		<origin xyz="0 0 0.4" rpy="-1.57079632679 0 0"/>
 	</joint>
 
 	<!-- JOINT2 -->
 	<link name="joint_2">
-		<visual>
-			<origin xyz="0 0 0" rpy="0 0 0" />
-		</visual>
 	</link>
 	<joint name="joint_piece2" type="fixed">
 		<parent link="joint_1"/>
@@ -32,9 +23,6 @@
 
 	<!-- JOINT3 -->
 	<link name="joint_3">
-		<visual>
-			<origin xyz="0 0 0" rpy="0 0 0" />
-		</visual>
 	</link>
 	<joint name="joint_piece3" type="fixed">
 		<parent link="joint_2"/>
