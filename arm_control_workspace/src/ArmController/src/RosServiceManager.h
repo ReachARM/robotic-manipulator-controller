@@ -16,6 +16,7 @@
 
 #include "ArmController/MoveRelativeTool.h"
 #include "ArmController/MoveAbsoluteMotor.h"
+#include "ArmController/MoveIncrementMotor.h"
 #include "ArmController/GetArmStatus.h"
 #include "ArmController/GetMotorAngle.h"
 
@@ -32,6 +33,9 @@ public:
 
     bool moveAbsoluteMotor(ArmController::MoveAbsoluteMotor::Request &req,
                           ArmController::MoveAbsoluteMotor::Response &res);
+
+    bool moveIncrementMotor(ArmController::MoveIncrementMotor::Request &req,
+                            ArmController::MoveIncrementMotor::Response &res);
 
     bool getArmStatus(ArmController::GetArmStatus::Request &req,
                           ArmController::GetArmStatus::Response &res);

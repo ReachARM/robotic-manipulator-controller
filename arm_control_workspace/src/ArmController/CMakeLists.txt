@@ -12,6 +12,7 @@ add_service_files(
   FILES
   MoveRelativeTool.srv
   MoveAbsoluteMotor.srv
+  MoveIncrementMotor.srv
   GetArmStatus.srv
   GetMotorAngle.srv
 )

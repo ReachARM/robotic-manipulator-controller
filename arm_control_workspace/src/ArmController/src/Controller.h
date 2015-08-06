@@ -60,6 +60,8 @@ public:
 
     bool moveAbsoluteMotor( const MOTOR_ID& motor, const float targetAngle );
 
+    bool moveIncrementMotor( const MOTOR_ID& motor, const float increment );
+
 private:
 
     Motor* getMotor(const MOTOR_ID& motor)const;

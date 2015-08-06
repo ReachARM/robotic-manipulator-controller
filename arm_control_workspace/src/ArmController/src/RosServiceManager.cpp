@@ -19,6 +19,7 @@ void RosServiceManager::initServices(ros::NodeHandle* nodeHandlePtr) {
         if( nodeHandlePtr != nullptr ) {
             services.push_back(nodeHandlePtr->advertiseService("move_absolute_motor",&RosServiceManager::moveAbsoluteMotor, this));
             services.push_back(nodeHandlePtr->advertiseService("move_relative_tool",&RosServiceManager::moveRelativeTool, this));
+            services.push_back(nodeHandlePtr->advertiseService("move_increment_motor",&RosServiceManager::moveIncrementMotor, this));
             services.push_back(nodeHandlePtr->advertiseService("get_arm_status",&RosServiceManager::getArmStatus, this));
             services.push_back(nodeHandlePtr->advertiseService("get_motor_angle",&RosServiceManager::getMotorAngle, this));
             isInit = true;
@@ -62,5 +63,13 @@ bool RosServiceManager::getMotorAngle(ArmController::GetMotorAngle::Request &req
     ROS_INFO("Motor: %d", req.motorID);
     res.angle = controller->getMotorCurrentAngle(Controller::MOTOR_ID(req.motorID));
     return true;
+}
+
+bool RosServiceManager::moveIncrementMotor(ArmController::MoveIncrementMotor::Request &req,
+                        ArmController::MoveIncrementMotor::Response &res){
+    ROS_INFO("Request for increment motor movement");
+    ROS_INFO("Motor :%d    Angle: %f",(int)req.motorID,(float)req.increment);
+    controller->moveIncrementMotor(static_cast<Controller::MOTOR_ID>(req.motorID),static_cast<float>(req.increment));
+
 }
 

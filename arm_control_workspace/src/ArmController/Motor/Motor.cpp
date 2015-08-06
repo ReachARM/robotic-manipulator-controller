@@ -12,13 +12,14 @@
 #include <iostream>
 
 // CTOR
-Motor::Motor(const __uint8_t id, const float lowAngleLimit, const float highAngleLimit, const int defaultBaurate, const int speedRpmLimit)
+Motor::Motor(const __uint8_t id, const float lowAngleLimit, const float highAngleLimit, const int defaultBaurate, const int speedRpmLimit, const int angle_offset_)
 :motor_id(id),
  lowStepLimit(lowAngleLimit),
  highStepLimit(highAngleLimit),
  speedRpmLimit(speedRpmLimit),
  defaultBaudrate(defaultBaurate),
- opened(false)
+ opened(false),
+angle_offset(angle_offset_)
 {}
 
 //DTOR
@@ -31,7 +32,7 @@ void Motor::initializeMotor(){
     auto currentAngle = getCurrentAngle();
     if(currentAngle!=-1) {
         ROS_INFO("Motor:%d at current Angle: %f", motor_id, currentAngle);
-        if( currentAngle < (lowStepLimit*STEP_PRECISION-BONDING_BOX_SIZE_FOR_INITIALIZATION) || currentAngle > (highStepLimit*STEP_PRECISION+BONDING_BOX_SIZE_FOR_INITIALIZATION) ) {
+        if( currentAngle < (-100) || currentAngle > (100) ) { // TODO HARDCODED VALUES
             ROS_INFO("Not within boundaries L:%f  H%f",(lowStepLimit*STEP_PRECISION),(highStepLimit*STEP_PRECISION));
             opened = false;
         } else {

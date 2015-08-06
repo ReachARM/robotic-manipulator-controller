@@ -25,7 +25,7 @@ public :
     // Max angle = 244 deg @ step 815
     // Min angle = 61 deg @ step 200
     Motor( const __uint8_t id, const float lowAngleLimit = 200, const float highAngleLimit = 815, const int defaultBaudrate = 1,
-           const int speedRpmLimit = 80);
+           const int speedRpmLimit = 80, const int angle_offset_ = 0);
     ~Motor();
 
     //-----------------------------------------------
@@ -42,6 +42,7 @@ public :
     inline void halt();
     inline void setStep(const int step);
     inline void setCurrentAngle(const float angle);
+    inline void setIncrementAngle(const float increment);
     inline void setSpeed(const int speed);
 
     // Status
@@ -89,6 +90,8 @@ private :
     int defaultBaudrate;
     __uint8_t motor_id;
 
+    const int angle_offset;
+
     // status
     bool opened;
 
@@ -127,11 +130,26 @@ inline void Motor::setSpeed( const int speed ){
 
 inline void Motor::setCurrentAngle(const float angle) {
     if( opened ){
-        if( angle > (lowStepLimit*STEP_PRECISION) && angle < (highStepLimit*STEP_PRECISION) )
-            dxl_write_word(motor_id,GOAL_POSITION_L,static_cast<int>(angle/STEP_PRECISION));
+        ROS_INFO("Angle : %f", angle);
+        if( (angle_offset+angle) > (lowStepLimit*STEP_PRECISION) && (angle_offset - angle) < (highStepLimit*STEP_PRECISION) )
+            if((angle-angle_offset)<0)
+                dxl_write_word(motor_id,GOAL_POSITION_L,static_cast<int>((angle_offset-angle)/STEP_PRECISION));
+            else
+                dxl_write_word(motor_id,GOAL_POSITION_L,static_cast<int>((angle+angle_offset)/STEP_PRECISION));
         else
             ROS_ERROR("Motor:%d cannot move to angle:%f , limits are %f to %f",motor_id,angle,(lowStepLimit*STEP_PRECISION),(highStepLimit*STEP_PRECISION));
     } else {
+        ROS_WARN("Motor:%d is not opened", motor_id);
+    }
+}
+
+inline void Motor::setIncrementAngle(const float increment){
+    if( opened ){
+        auto currentAngle = getCurrentAngle();
+        ROS_INFO("Current angle %f", currentAngle);
+        ROS_INFO("Increment %f", increment);
+        setCurrentAngle(currentAngle+increment);
+    }  else {
         ROS_WARN("Motor:%d is not opened", motor_id);
     }
 }
@@ -154,7 +172,8 @@ inline float Motor::getCurrentAngle() const {
     auto  angleRead = dxl_read_word(motor_id, PRESENT_POSITION_L);
     auto current_angle = static_cast<float>(dxl_read_word(motor_id, PRESENT_POSITION_L)) * STEP_PRECISION;
     if( dxl_get_result() == COMM_RXSUCCESS ) {
-        return current_angle;
+
+        return  angle_offset - current_angle;
     } else {
         ROS_WARN("Error code is : ", dxl_get_result());
         ROS_WARN("Error while reading angle on Motor:%d", motor_id);
