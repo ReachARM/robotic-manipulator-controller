@@ -30,17 +30,23 @@ Motor::~Motor() {
 void Motor::initializeMotor(){
     // Check if current angle is within limits
     auto currentAngle = getCurrentAngle();
-    if(currentAngle!=-1) {
-        ROS_INFO("Motor:%d at current Angle: %f", motor_id, currentAngle);
-        if( currentAngle < (-100) || currentAngle > (100) ) { // TODO HARDCODED VALUES
-            ROS_INFO("Not within boundaries L:%f  H%f",(lowStepLimit*STEP_PRECISION),(highStepLimit*STEP_PRECISION));
-            opened = false;
-        } else {
-            ROS_INFO("Motor:%d is opened", motor_id);
-            opened = true;
+    if(lowStepLimit != INFINITE_BOUNDARIES && highStepLimit != INFINITE_BOUNDARIES) {
+        if (currentAngle != -1) {
+            ROS_INFO("Motor:%d at current Angle: %f", motor_id, currentAngle);
+            if (currentAngle < (lowStepLimit * STEP_PRECISION - angle_offset - 10) ||
+                currentAngle > (highStepLimit * STEP_PRECISION - angle_offset + 10)) { // TODO HARDCODED VALUES
+                ROS_INFO("Not within boundaries L:%f  H%f", (lowStepLimit * STEP_PRECISION),
+                         (highStepLimit * STEP_PRECISION));
+                opened = false;
+            } else {
+                ROS_INFO("Motor:%d is opened", motor_id);
+                opened = true;
+            }
         }
+    } else {
+        ROS_INFO("Motor:%d is opened", motor_id);
+        opened = true;
     }
-
     if( opened ) {
 
         ROS_INFO("Settings Motor:%d limits", motor_id);
@@ -113,4 +119,24 @@ void Motor::PrintErrorCode() const
 
     if(dxl_get_rxpacket_error(ERRBIT_INSTRUCTION) == 1)
         printf("Instruction code error!\n");
+}
+
+void Motor::setCurrentAngle(const float angle) {
+    if( opened ){
+        ROS_INFO("Angle : %f", angle);
+        if(lowStepLimit != INFINITE_BOUNDARIES && highStepLimit != INFINITE_BOUNDARIES) {
+            if ((angle_offset + angle) > (lowStepLimit * STEP_PRECISION) &&
+                (angle_offset - angle) < (highStepLimit * STEP_PRECISION)) if ((angle - angle_offset) < 0)
+                dxl_write_word(motor_id, GOAL_POSITION_L, static_cast<int>((angle_offset - angle) / STEP_PRECISION));
+            else
+                dxl_write_word(motor_id, GOAL_POSITION_L, static_cast<int>((angle + angle_offset) / STEP_PRECISION));
+            else
+                ROS_ERROR("Motor:%d cannot move to angle:%f , limits are %f to %f", motor_id, angle,
+                          (lowStepLimit * STEP_PRECISION), (highStepLimit * STEP_PRECISION));
+        } else {
+            dxl_write_word(motor_id, GOAL_POSITION_L, static_cast<int>((360+angle_offset-angle) / STEP_PRECISION));
+        }
+    } else {
+        ROS_WARN("Motor:%d is not opened", motor_id);
+    }
 }

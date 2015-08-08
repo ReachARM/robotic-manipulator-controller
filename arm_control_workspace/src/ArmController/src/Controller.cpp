@@ -10,9 +10,9 @@
 #include "Controller.h"
 
 Controller::Controller()
-:base(std::make_unique<Motor>(static_cast<__uint8_t >(BASE_ID),0,1020,1,80,77)),
- shoulder(std::make_unique<Motor>(static_cast<__uint8_t>(SHOULDER_ID),185,770,1,80,177)),
- elbow(std::make_unique<Motor>(static_cast<__uint8_t>(ELBOW_ID),171,770,1,80,177)),
+:base(std::make_unique<Motor>(static_cast<__uint8_t >(BASE_ID),-1,-1,1,80,77)),
+ shoulder(std::make_unique<Motor>(static_cast<__uint8_t>(SHOULDER_ID),181,783,1,80,177)),
+ elbow(std::make_unique<Motor>(static_cast<__uint8_t>(ELBOW_ID),181,783,1,80,177)),
  wrist(std::make_unique<Motor>(static_cast<__uint8_t>(WRIST_ID),0,0)),
  currentState(NO_ERROR),
  BASE_START_POSITION(0),

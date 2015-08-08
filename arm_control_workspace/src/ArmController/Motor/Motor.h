@@ -41,7 +41,7 @@ public :
     // Setters
     inline void halt();
     inline void setStep(const int step);
-    inline void setCurrentAngle(const float angle);
+    void setCurrentAngle(const float angle);
     inline void setIncrementAngle(const float increment);
     inline void setSpeed(const int speed);
 
@@ -56,6 +56,8 @@ public :
     inline bool isOpened() const;
 
     void initializeMotor();
+
+    static const int INFINITE_BOUNDARIES = -1;
 
 private :
 
@@ -123,21 +125,6 @@ inline void Motor::setSpeed( const int speed ){
             dxl_write_word(motor_id, MOVING_SPEED_L, speed);
         else
             ROS_ERROR("Motor:%d cannot set speed to %d , must be between 0 and %d", motor_id,speed,speedRpmLimit);
-    } else {
-        ROS_WARN("Motor:%d is not opened", motor_id);
-    }
-}
-
-inline void Motor::setCurrentAngle(const float angle) {
-    if( opened ){
-        ROS_INFO("Angle : %f", angle);
-        if( (angle_offset+angle) > (lowStepLimit*STEP_PRECISION) && (angle_offset - angle) < (highStepLimit*STEP_PRECISION) )
-            if((angle-angle_offset)<0)
-                dxl_write_word(motor_id,GOAL_POSITION_L,static_cast<int>((angle_offset-angle)/STEP_PRECISION));
-            else
-                dxl_write_word(motor_id,GOAL_POSITION_L,static_cast<int>((angle+angle_offset)/STEP_PRECISION));
-        else
-            ROS_ERROR("Motor:%d cannot move to angle:%f , limits are %f to %f",motor_id,angle,(lowStepLimit*STEP_PRECISION),(highStepLimit*STEP_PRECISION));
     } else {
         ROS_WARN("Motor:%d is not opened", motor_id);
     }
