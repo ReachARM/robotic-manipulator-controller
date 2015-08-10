@@ -42,20 +42,28 @@ void Motor::initializeMotor(){
                 ROS_INFO("Motor:%d is opened", motor_id);
                 opened = true;
             }
+
+            // Clockwise angle limit
+            dxl_write_word(motor_id, CW_ANGLE_LIMIT_L, static_cast<int>(lowStepLimit));
+
+            // Counter-Clockwise angle limit
+            dxl_write_word(motor_id, CCW_ANGLE_LIMIT_L, static_cast<int>(highStepLimit));
+
         }
     } else {
         ROS_INFO("Motor:%d is opened", motor_id);
         opened = true;
+
+        // Clockwise angle limit
+        dxl_write_word(motor_id, CW_ANGLE_LIMIT_L, MIN_VALUE_FOR_INFINITE_JOINTS);
+
+        // Counter-Clockwise angle limit
+        dxl_write_word(motor_id, CCW_ANGLE_LIMIT_L, MAX_VALUE_FOR_INFINITE_JOINTS);
+
     }
     if( opened ) {
 
         ROS_INFO("Settings Motor:%d limits", motor_id);
-
-        // Clockwise angle limit
-        dxl_write_word(motor_id, CW_ANGLE_LIMIT_L, static_cast<int>(lowStepLimit));
-
-        // Counter-Clockwise angle limit
-        dxl_write_word(motor_id, CCW_ANGLE_LIMIT_L, static_cast<int>(highStepLimit));
 
         // Speed
         dxl_write_word( motor_id, MOVING_SPEED_L, speedRpmLimit);
@@ -134,7 +142,7 @@ void Motor::setCurrentAngle(const float angle) {
                 ROS_ERROR("Motor:%d cannot move to angle:%f , limits are %f to %f", motor_id, angle,
                           (lowStepLimit * STEP_PRECISION), (highStepLimit * STEP_PRECISION));
         } else {
-            dxl_write_word(motor_id, GOAL_POSITION_L, static_cast<int>((360+angle_offset-angle) / STEP_PRECISION));
+            dxl_write_word(motor_id, GOAL_POSITION_L, static_cast<int>((angle + angle_offset) / STEP_PRECISION));
         }
     } else {
         ROS_WARN("Motor:%d is not opened", motor_id);

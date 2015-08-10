@@ -25,7 +25,7 @@ public :
     // Max angle = 244 deg @ step 815
     // Min angle = 61 deg @ step 200
     Motor( const __uint8_t id, const float lowAngleLimit = 200, const float highAngleLimit = 815, const int defaultBaudrate = 1,
-           const int speedRpmLimit = 80, const int angle_offset_ = 0);
+           const int speedRpmLimit = 45, const int angle_offset_ = 0);
     ~Motor();
 
     //-----------------------------------------------
@@ -84,6 +84,8 @@ private :
 
     static const auto MAX_RPM_SPEED = 114;
     static const auto BONDING_BOX_SIZE_FOR_INITIALIZATION = 10; // +/- 10 degrees at init is allowed
+    static const auto MIN_VALUE_FOR_INFINITE_JOINTS = 0;
+    static const auto MAX_VALUE_FOR_INFINITE_JOINTS = 1000;
 
     // Dynamixel controlling values
     int speedRpmLimit;
