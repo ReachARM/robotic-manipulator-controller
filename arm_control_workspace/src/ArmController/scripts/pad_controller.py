@@ -69,7 +69,7 @@ while not end:
     time.sleep(0.1)
 
 
-joystick_object.quit()
+joystick_object.quizt()
 #destroy objects and clean up
 pygame.joystick.quit()
 

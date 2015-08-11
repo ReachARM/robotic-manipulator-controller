@@ -20,6 +20,7 @@ void RosServiceManager::initServices(ros::NodeHandle* nodeHandlePtr) {
             services.push_back(nodeHandlePtr->advertiseService("move_absolute_motor",&RosServiceManager::moveAbsoluteMotor, this));
             services.push_back(nodeHandlePtr->advertiseService("move_relative_tool",&RosServiceManager::moveRelativeTool, this));
             services.push_back(nodeHandlePtr->advertiseService("move_increment_motor",&RosServiceManager::moveIncrementMotor, this));
+            services.push_back(nodeHandlePtr->advertiseService("move_base", &RosServiceManager::moveBase, this));
             services.push_back(nodeHandlePtr->advertiseService("get_arm_status",&RosServiceManager::getArmStatus, this));
             services.push_back(nodeHandlePtr->advertiseService("get_motor_angle",&RosServiceManager::getMotorAngle, this));
             isInit = true;
@@ -70,6 +71,16 @@ bool RosServiceManager::moveIncrementMotor(ArmController::MoveIncrementMotor::Re
     ROS_INFO("Request for increment motor movement");
     ROS_INFO("Motor :%d    Angle: %f",(int)req.motorID,(float)req.increment);
     controller->moveIncrementMotor(static_cast<Controller::MOTOR_ID>(req.motorID),static_cast<float>(req.increment));
+    return true;
+}
 
+bool RosServiceManager::moveBase(ArmController::MoveBase::Request &req,
+              ArmController::MoveBase::Response &res){
+    ROS_INFO("Request for moving base at angle : %f", (float)req.angle);
+    if( (float)req.angle > -1 && (float) req.angle < 361 )
+        controller->moveBase(static_cast<float>(req.angle));
+    else
+        ROS_INFO("Bad angle");
+    return true;
 }
 

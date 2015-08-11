@@ -36,6 +36,7 @@ public :
     inline float getCurrentAngle() const;
     inline int getCurrentSpeed() const;
     inline __uint8_t getCurrentID() const;
+    inline float getRelativeMotorAngle( const float angle ) const;
 
 
     // Setters
@@ -59,12 +60,6 @@ public :
 
     static const int INFINITE_BOUNDARIES = -1;
 
-private :
-
-    Motor& operator=(const Motor&);
-    Motor(const Motor&);
-    Motor();
-
     // Control table address
     // L : Low byte
     // H : high byte
@@ -86,6 +81,12 @@ private :
     static const auto BONDING_BOX_SIZE_FOR_INITIALIZATION = 10; // +/- 10 degrees at init is allowed
     static const auto MIN_VALUE_FOR_INFINITE_JOINTS = 0;
     static const auto MAX_VALUE_FOR_INFINITE_JOINTS = 1000;
+
+private :
+
+    Motor& operator=(const Motor&);
+    Motor(const Motor&);
+    Motor();
 
     // Dynamixel controlling values
     int speedRpmLimit;
@@ -172,6 +173,10 @@ inline float Motor::getCurrentAngle() const {
 
 inline bool Motor::isOpened() const {
     return opened;
+}
+
+inline float Motor::getRelativeMotorAngle(const float angle) const {
+
 }
 
 #endif //ARMCONTROLLER_MOTOR_H

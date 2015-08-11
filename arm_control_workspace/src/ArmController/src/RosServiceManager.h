@@ -17,6 +17,7 @@
 #include "ArmController/MoveRelativeTool.h"
 #include "ArmController/MoveAbsoluteMotor.h"
 #include "ArmController/MoveIncrementMotor.h"
+#include "ArmController/MoveBase.h"
 #include "ArmController/GetArmStatus.h"
 #include "ArmController/GetMotorAngle.h"
 
@@ -37,11 +38,15 @@ public:
     bool moveIncrementMotor(ArmController::MoveIncrementMotor::Request &req,
                             ArmController::MoveIncrementMotor::Response &res);
 
+    bool moveBase(ArmController::MoveBase::Request &req,
+                  ArmController::MoveBase::Response &res);
+
     bool getArmStatus(ArmController::GetArmStatus::Request &req,
                           ArmController::GetArmStatus::Response &res);
 
     bool getMotorAngle(ArmController::GetMotorAngle::Request &req,
                           ArmController::GetMotorAngle::Response &res);
+
 
 private:
 

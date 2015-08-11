@@ -16,6 +16,8 @@
 
 #include "../util/Pointers.h"
 
+static const auto PI = 3.14159;
+
 class Controller {
 
 public:
@@ -62,7 +64,13 @@ public:
 
     bool moveIncrementMotor( const MOTOR_ID& motor, const float increment );
 
+    bool moveBase( const float angle );
+    //bool moveShoulder( const float angle ); TODO
+    //bool moveElbow( const float angle ); TODO
+
 private:
+
+    bool moveSyncMotor(const std::vector<MOTOR_ID>& motors, const float angle);
 
     Motor* getMotor(const MOTOR_ID& motor)const;
 
@@ -71,6 +79,7 @@ private:
 
     // The Motors
     std::unique_ptr<Motor> base, shoulder, elbow, wrist;
+    std::vector<std::unique_ptr<Motor>> base_joint, shoulder_joint, elbow_joint, wrist_joint;
 
     // Current State
     ERROR currentState;

@@ -122,3 +122,45 @@ Motor* Controller::getMotor(const Controller::MOTOR_ID& motor)const{
     }
     return motorPtr;
 }
+
+bool Controller::moveSyncMotor(const std::vector<MOTOR_ID>& motors, const float angle) {
+
+    ROS_INFO("Moving motors synchro");
+    auto NUM_ACTUATOR = motors.size();
+
+    auto id = std::vector<int>(), phase = std::vector<int>();
+
+    auto i = 0;
+    for( i=0; i<NUM_ACTUATOR; i++ )
+    {
+        id.push_back(motors[i].id);
+        //phase.push_back()phase[i] = 2* PI * (float)i / (float)NUM_ACTUATOR;
+    }
+
+    ROS_INFO("Before packet");
+    dxl_set_txpacket_id(BROADCAST_ID);
+    dxl_set_txpacket_instruction(INST_SYNC_WRITE);
+    dxl_set_txpacket_parameter(0, Motor::GOAL_POSITION_L);
+    dxl_set_txpacket_parameter(1, 2);
+
+
+    for( i=0; i<NUM_ACTUATOR; i++ )
+    {
+        ROS_INFO("Adding motor %d", i );
+        dxl_set_txpacket_parameter(2+3*i, id[i]);
+        auto goalPos = static_cast<int>(getMotor(MOTOR_ID(id[i]))->getRelativeMotorAngle(angle) / Motor::STEP_PRECISION);
+        dxl_set_txpacket_parameter(2+3*i+1, dxl_get_lowbyte(goalPos));
+        dxl_set_txpacket_parameter(2+3*i+2, dxl_get_highbyte(goalPos));
+    }
+    dxl_set_txpacket_length((2+1)*NUM_ACTUATOR+4);
+
+    ROS_INFO("Before sending packet");
+    dxl_txrx_packet();
+}
+
+bool Controller::moveBase(const float angle) {
+    auto motors = std::vector<MOTOR_ID>();
+    motors.push_back(MOTOR_ID(BASE_ID));
+    motors.push_back(MOTOR_ID(SHOULDER_ID));
+    moveSyncMotor(motors,angle);
+}
