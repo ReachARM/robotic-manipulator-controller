@@ -21,46 +21,51 @@
 #include "ArmController/GetArmStatus.h"
 #include "ArmController/GetMotorAngle.h"
 
-class RosServiceManager {
+namespace arm_controler {
 
-public:
+    class RosServiceManager {
 
-    RosServiceManager(Controller* _controller);
+    public:
 
-    void initServices(ros::NodeHandle* nodeHandlePtr);
+        RosServiceManager(Controller *_controller);
 
-    bool moveRelativeTool(ArmController::MoveRelativeTool::Request &req,
-                          ArmController::MoveRelativeTool::Response &res);
+        void initServices(ros::NodeHandle *nodeHandlePtr);
 
-    bool moveAbsoluteMotor(ArmController::MoveAbsoluteMotor::Request &req,
-                          ArmController::MoveAbsoluteMotor::Response &res);
+        bool moveRelativeTool(ArmController::MoveRelativeTool::Request &req,
+                              ArmController::MoveRelativeTool::Response &res);
 
-    bool moveIncrementMotor(ArmController::MoveIncrementMotor::Request &req,
-                            ArmController::MoveIncrementMotor::Response &res);
+        bool moveAbsoluteMotor(ArmController::MoveAbsoluteMotor::Request &req,
+                               ArmController::MoveAbsoluteMotor::Response &res);
 
-    bool moveBase(ArmController::MoveBase::Request &req,
-                  ArmController::MoveBase::Response &res);
+        bool moveIncrementMotor(ArmController::MoveIncrementMotor::Request &req,
+                                ArmController::MoveIncrementMotor::Response &res);
 
-    bool getArmStatus(ArmController::GetArmStatus::Request &req,
+        bool moveBase(ArmController::MoveBase::Request &req,
+                      ArmController::MoveBase::Response &res);
+
+        bool getArmStatus(ArmController::GetArmStatus::Request &req,
                           ArmController::GetArmStatus::Response &res);
 
-    bool getMotorAngle(ArmController::GetMotorAngle::Request &req,
-                          ArmController::GetMotorAngle::Response &res);
+        bool getMotorAngle(ArmController::GetMotorAngle::Request &req,
+                           ArmController::GetMotorAngle::Response &res);
 
 
-private:
+    private:
 
-    bool isInit;
+        bool isInit;
 
-    Controller* controller;
+        Controller *controller;
 
-    std::vector<ros::ServiceServer> services;
+        std::vector<ros::ServiceServer> services;
 
-    // Locked methods
-    RosServiceManager(){}
-    RosServiceManager(const RosServiceManager&){}
-    RosServiceManager& operator=(const RosServiceManager&){}
-};
+        // Locked methods
+        RosServiceManager() { }
 
+        RosServiceManager(const RosServiceManager &) { }
+
+        RosServiceManager &operator=(const RosServiceManager &) { }
+    };
+
+}
 
 #endif //ARMCONTROLLER_ROSSERVICEMANAGER_H

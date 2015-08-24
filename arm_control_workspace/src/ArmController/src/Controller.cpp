@@ -9,7 +9,7 @@
 
 #include "Controller.h"
 
-Controller::Controller()
+arm_controler::Controller::Controller()
 :base_left(std::make_unique<Motor>(static_cast<__uint8_t >(BASE_LEFT_ID),-1,-1,1,80,77)),
  base_right(std::make_unique<Motor>(static_cast<__uint8_t >(BASE_RIGHT_ID),-1,-1,1,80,77)),
  shoulder_left(std::make_unique<Motor>(static_cast<__uint8_t>(SHOULDER_LEFT_ID),181,783,1,80,177)),
@@ -70,7 +70,7 @@ Controller::Controller()
 
 }
 
-Controller::~Controller() {
+arm_controler::Controller::~Controller() {
     try {
         dxl_terminate();
     } catch (...) {
@@ -79,7 +79,7 @@ Controller::~Controller() {
 }
 
 
-bool Controller::moveAbsoluteMotor(const Controller::MOTOR_ID& motor, const float targetAngle) {
+bool arm_controler::Controller::moveAbsoluteMotor(const Controller::MOTOR_ID& motor, const float targetAngle) {
     ROS_INFO("Moving absolute motor");
     if(motor.id<BASE_RIGHT_ID || motor.id>WRIST_ID ) {
         ROS_WARN("Motor ID is no within boundaries");
@@ -94,7 +94,7 @@ bool Controller::moveAbsoluteMotor(const Controller::MOTOR_ID& motor, const floa
     return true;
 }
 
-bool Controller::moveIncrementMotor(const Controller::MOTOR_ID& motor, const float increment){
+bool arm_controler::Controller::moveIncrementMotor(const Controller::MOTOR_ID& motor, const float increment){
     ROS_INFO("Moving increment motor");
     if(motor.id<BASE_RIGHT_ID || motor.id>WRIST_ID ) {
         ROS_WARN("Motor ID is no within boundaries");
@@ -109,8 +109,8 @@ bool Controller::moveIncrementMotor(const Controller::MOTOR_ID& motor, const flo
     return true;
 }
 
-// TODO Comment this section
-bool Controller::moveRelativeTool(const float tX, const float tY, const float tZ,
+
+bool arm_controler::Controller::moveRelativeTool(const float tX, const float tY, const float tZ,
                                   const float roll, const float pitch, const float yaw) {
     if( currentState == NO_ERROR ){
         // move the robot
@@ -121,7 +121,7 @@ bool Controller::moveRelativeTool(const float tX, const float tY, const float tZ
 }
 
 
-Motor* Controller::getMotor(const Controller::MOTOR_ID& motor)const{
+arm_controler::Motor* arm_controler::Controller::getMotor(const Controller::MOTOR_ID& motor)const{
     Motor* motorPtr;
     switch(motor.id){
         case (BASE_LEFT_ID):{
@@ -156,7 +156,7 @@ Motor* Controller::getMotor(const Controller::MOTOR_ID& motor)const{
     return motorPtr;
 }
 
-bool Controller::moveSyncMotor(const std::vector<MOTOR_ID>& motors, const float angle) {
+bool arm_controler::Controller::moveSyncMotor(const std::vector<MOTOR_ID>& motors, const float angle) {
 
     ROS_INFO("Moving motors synchro");
     auto NUM_ACTUATOR = motors.size();

@@ -17,94 +17,110 @@
 #include <stdio.h>
 #include <iostream>
 
-class Motor {
+namespace arm_controler {
 
-public :
+    class Motor {
 
-    // CTOR - DTOR
-    // Max angle = 244 deg @ step 815
-    // Min angle = 61 deg @ step 200
-    Motor( const __uint8_t id, const float lowAngleLimit = 200, const float highAngleLimit = 815, const int defaultBaudrate = 1,
-           const int speedRpmLimit = 45, const int angle_offset_ = 0);
-    ~Motor();
+    public :
 
-    //-----------------------------------------------
-    // DYNAMIXEL Section
-    //
+        // CTOR - DTOR
+        // Max angle = 244 deg @ step 815
+        // Min angle = 61 deg @ step 200
+        Motor(const __uint8_t id, const float lowAngleLimit = 200, const float highAngleLimit = 815,
+              const int defaultBaudrate = 1,
+              const int speedRpmLimit = 45, const int angle_offset_ = 0);
 
-    // Getters
-    inline float getCurrentAngle() const;
-    inline int getCurrentSpeed() const;
-    inline __uint8_t getCurrentID() const;
-    inline float getRelativeMotorAngle( const float angle ) const;
+        ~Motor();
+
+        //-----------------------------------------------
+        // DYNAMIXEL Section
+        //
+
+        // Getters
+        inline float getCurrentAngle() const;
+
+        inline int getCurrentSpeed() const;
+
+        inline __uint8_t getCurrentID() const;
+
+        inline float getRelativeMotorAngle(const float angle) const;
 
 
-    // Setters
-    inline void halt();
-    inline void setStep(const int step);
-    void setCurrentAngle(const float angle);
-    inline void setIncrementAngle(const float increment);
-    inline void setSpeed(const int speed);
+        // Setters
+        inline void halt();
 
-    // Status
-    void PrintCommStatus(const int status) const;
-    void PrintErrorCode() const;
+        inline void setStep(const int step);
 
-    //
-    // END OF DYNAMIXEL SECTION
-    //-----------------------------------------------
+        void setCurrentAngle(const float angle);
 
-    inline bool isOpened() const;
+        inline void setIncrementAngle(const float increment);
 
-    void initializeMotor();
+        inline void setSpeed(const int speed);
 
-    static const int INFINITE_BOUNDARIES = -1;
+        // Status
+        void PrintCommStatus(const int status) const;
 
-    // Control table address
-    // L : Low byte
-    // H : high byte
-    // A word adress is 16 bits (i.e. composed of a L and H byte)
-    static const auto CW_ANGLE_LIMIT_L = 6;
-    static const auto CW_ANGLE_LIMIT_H = 7;
-    static const auto CCW_ANGLE_LIMIT_L = 8;
-    static const auto CCW_ANGLE_LIMIT_H = 9;
-    static const auto GOAL_POSITION_L = 30;
-    static const auto GOAL_POSITION_H = 31;
-    static const auto PRESENT_POSITION_L = 36;
-    static const auto PRESENT_POSITION_H = 37;
-    static const auto MOVING_SPEED_L = 32;
-    static const auto MOVING_SPEED_H = 33;
+        void PrintErrorCode() const;
 
-    static constexpr auto STEP_PRECISION = 0.3500;
+        //
+        // END OF DYNAMIXEL SECTION
+        //-----------------------------------------------
 
-    static const auto MAX_RPM_SPEED = 114;
-    static const auto BONDING_BOX_SIZE_FOR_INITIALIZATION = 10; // +/- 10 degrees at init is allowed
-    static const auto MIN_VALUE_FOR_INFINITE_JOINTS = 0;
-    static const auto MAX_VALUE_FOR_INFINITE_JOINTS = 1000;
+        inline bool isOpened() const;
 
-private :
+        void initializeMotor();
 
-    Motor& operator=(const Motor&);
-    Motor(const Motor&);
-    Motor();
+        static const int INFINITE_BOUNDARIES = -1;
 
-    // Dynamixel controlling values
-    int speedRpmLimit;
-    int highStepLimit;
-    int lowStepLimit;
-    int defaultBaudrate;
-    __uint8_t motor_id;
+        // Control table address
+        // L : Low byte
+        // H : high byte
+        // A word adress is 16 bits (i.e. composed of a L and H byte)
+        static const auto CW_ANGLE_LIMIT_L = 6;
+        static const auto CW_ANGLE_LIMIT_H = 7;
+        static const auto CCW_ANGLE_LIMIT_L = 8;
+        static const auto CCW_ANGLE_LIMIT_H = 9;
+        static const auto GOAL_POSITION_L = 30;
+        static const auto GOAL_POSITION_H = 31;
+        static const auto PRESENT_POSITION_L = 36;
+        static const auto PRESENT_POSITION_H = 37;
+        static const auto MOVING_SPEED_L = 32;
+        static const auto MOVING_SPEED_H = 33;
 
-    const int angle_offset;
+        static constexpr auto STEP_PRECISION = 0.3500;
 
-    // status
-    bool opened;
+        static const auto MAX_RPM_SPEED = 114;
+        static const auto BONDING_BOX_SIZE_FOR_INITIALIZATION = 10; // +/- 10 degrees at init is allowed
+        static const auto MIN_VALUE_FOR_INFINITE_JOINTS = 0;
+        static const auto MAX_VALUE_FOR_INFINITE_JOINTS = 1000;
 
-};
+    private :
+
+        Motor &operator=(const Motor &);
+
+        Motor(const Motor &);
+
+        Motor();
+
+        // Dynamixel controlling values
+        int speedRpmLimit;
+        int highStepLimit;
+        int lowStepLimit;
+        int defaultBaudrate;
+        __uint8_t motor_id;
+
+        const int angle_offset;
+
+        // status
+        bool opened;
+
+    };
+
+}
 
 // INLINES
 
-inline void Motor::halt() {
+inline void arm_controler::Motor::halt() {
     if( opened ) {
         auto current = dxl_read_word(motor_id, PRESENT_POSITION_L);
         dxl_write_word(motor_id, GOAL_POSITION_L, current);
@@ -113,7 +129,7 @@ inline void Motor::halt() {
     }
 }
 
-inline void Motor::setStep(const int step) {
+inline void arm_controler::Motor::setStep(const int step) {
     if( opened ) {
         if (step > lowStepLimit && step < highStepLimit)
             dxl_write_word(motor_id, GOAL_POSITION_L, step);
@@ -122,7 +138,7 @@ inline void Motor::setStep(const int step) {
     }
 }
 
-inline void Motor::setSpeed( const int speed ){
+inline void arm_controler::Motor::setSpeed( const int speed ){
     if( opened ) {
         if (speed >= 0 && speed < speedRpmLimit)
             dxl_write_word(motor_id, MOVING_SPEED_L, speed);
@@ -133,7 +149,7 @@ inline void Motor::setSpeed( const int speed ){
     }
 }
 
-inline void Motor::setIncrementAngle(const float increment){
+inline void arm_controler::Motor::setIncrementAngle(const float increment){
     if( opened ){
         auto currentAngle = getCurrentAngle();
         ROS_INFO("Current angle %f", currentAngle);
@@ -144,11 +160,11 @@ inline void Motor::setIncrementAngle(const float increment){
     }
 }
 
-inline __uint8_t Motor::getCurrentID() const {
+inline __uint8_t arm_controler::Motor::getCurrentID() const {
     return motor_id;
 }
 
-inline int Motor::getCurrentSpeed() const {
+inline int arm_controler::Motor::getCurrentSpeed() const {
     int current_speed = dxl_read_word(motor_id,MOVING_SPEED_L);
     if( dxl_get_result() == COMM_RXSUCCESS ) {
         return current_speed;
@@ -158,7 +174,7 @@ inline int Motor::getCurrentSpeed() const {
     return -1;
 }
 
-inline float Motor::getCurrentAngle() const {
+inline float arm_controler::Motor::getCurrentAngle() const {
     auto  angleRead = dxl_read_word(motor_id, PRESENT_POSITION_L);
     auto current_angle = static_cast<float>(dxl_read_word(motor_id, PRESENT_POSITION_L)) * STEP_PRECISION;
     if( dxl_get_result() == COMM_RXSUCCESS ) {
@@ -171,11 +187,11 @@ inline float Motor::getCurrentAngle() const {
     return -1.0F;
 }
 
-inline bool Motor::isOpened() const {
+inline bool arm_controler::Motor::isOpened() const {
     return opened;
 }
 
-inline float Motor::getRelativeMotorAngle(const float angle) const {
+inline float arm_controler::Motor::getRelativeMotorAngle(const float angle) const {
 
 }
 

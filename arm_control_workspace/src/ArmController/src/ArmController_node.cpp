@@ -20,10 +20,10 @@ int main(int argc, char** argv){
     ros::NodeHandle n;
 
     ROS_INFO("Creating the controller");
-    Controller controller;
+    arm_controler::Controller controller;
 
     ROS_INFO("Creating the RosServiceManager");
-    RosServiceManager rosServiceManager(&controller);
+    arm_controler::RosServiceManager rosServiceManager(&controller);
 
     ROS_INFO("Initializing services");
     rosServiceManager.initServices(&n);
