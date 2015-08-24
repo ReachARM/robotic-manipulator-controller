@@ -1,6 +1,6 @@
 # robotic-manipulator-controller
 
-Robotic-Manipulator-Controller is the controlling software of a 4 degrees of freedom robotic manipulator intended to be used on an autonomous underwater vehicle. This project is part of my final project of studies. 
+Robotic-Manipulator-Controller is the controlling software of a 3 degrees of freedom robotic manipulator intended to be used on an autonomous underwater vehicle. This project is part of my final project of studies. 
 
 The requirements for this project are : 
 
@@ -10,12 +10,13 @@ The requirements for this project are :
 
 
 ### Version
-0.0.2
+0.0.21
 
 ### Libraries, Tools and other tech stuff
 
 This project uses the following libraries or tools : 
 
+* [ROS Indigo] - Indigo release of the Robot Operating System. 
 * [C++] - The programming language used by this software is C++. 
     * Future iterations will migrate the code to *C++11* and *C++14* standards.
 * [USB2Dynamixel] - Communication between the computer and the servos through USB using the Robotis USB2Dynamixel.
@@ -45,8 +46,6 @@ Readme files are included in the packages with the installation instruction from
  - Comment code and add tutorial
  - Calculate kinematics equations and integrate them into the controller
  - *C++11* and *C++14* migration
- - Add a controlling device (gamepad?, wiimote?)
-
 
 License
 ----
