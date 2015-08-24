@@ -53,13 +53,13 @@ def publish_transform():
                          "joint_2",
                          "joint_1")
 
-        br.sendTransform((0,0,0.23),
+        br.sendTransform((0,0,0.10),
                          tf.transformations.quaternion_from_euler(0,theta3,0),
                          rospy.Time.now(),
                          "joint_3",
                          "joint_2")
 
-        br.sendTransform((0,0,0.165),
+        br.sendTransform((0,0,0.10),
                          tf.transformations.quaternion_from_euler(0,0,0),
                          rospy.Time.now(),
                          "joint_4",
