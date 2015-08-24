@@ -16,8 +16,6 @@
 
 #include "../util/Pointers.h"
 
-static const auto PI = 3.14159;
-
 class Controller {
 
 public:
@@ -31,16 +29,21 @@ public:
     ~Controller(); // dxl_terminate();
 
     static const __uint8_t USB2DYNAMIXEL_ID = 0;
-    static const __uint8_t BASE_ID = USB2DYNAMIXEL_ID +1;
-    static const __uint8_t SHOULDER_ID = USB2DYNAMIXEL_ID +2;
-    static const __uint8_t ELBOW_ID = USB2DYNAMIXEL_ID +3;
-    static const __uint8_t WRIST_ID = USB2DYNAMIXEL_ID +4;
+    static const __uint8_t BASE_LEFT_ID = USB2DYNAMIXEL_ID +1;
+    static const __uint8_t BASE_RIGHT_ID = USB2DYNAMIXEL_ID +2;
+    static const __uint8_t SHOULDER_LEFT_ID = USB2DYNAMIXEL_ID +3;
+    static const __uint8_t SHOULDER_RIGHT_ID = USB2DYNAMIXEL_ID +4;
+    static const __uint8_t ELBOW_LEFT_ID = USB2DYNAMIXEL_ID + 5;
+    static const __uint8_t ELBOW_RIGHT_ID = USB2DYNAMIXEL_ID + 6;
+    static const __uint8_t WRIST_ID = USB2DYNAMIXEL_ID + 7;
 
     enum MOTOR {
-
-        BASE,
-        SHOULDER,
-        ELBOW,
+        BASE_LEFT,
+        BASE_RIGHT,
+        SHOULDER_LEFT,
+        SHOULDER_RIGHT,
+        ELBOW_LEFT,
+        ELBOW_RIGHT,
         WRIST
 
     };
@@ -54,19 +57,16 @@ public:
     };
 
     inline __uint8_t getCurrentArmStatus()const;
-
     inline float getMotorCurrentAngle(const MOTOR_ID& motor)const;
 
     bool moveRelativeTool(const float tX = 0.0F, const float tY = 0.0F, const float tZ = 0.0F,
                           const float roll = 0.0F, const float pitch = 0.0F, const float yaw = 0.0F);
-
     bool moveAbsoluteMotor( const MOTOR_ID& motor, const float targetAngle );
-
     bool moveIncrementMotor( const MOTOR_ID& motor, const float increment );
 
-    bool moveBase( const float angle );
-    //bool moveShoulder( const float angle ); TODO
-    //bool moveElbow( const float angle ); TODO
+    inline bool moveBase( const float angle );
+    inline bool moveShoulder( const float angle );
+    inline bool moveElbow( const float angle );
 
 private:
 
@@ -78,8 +78,12 @@ private:
     Controller(const Controller&);
 
     // The Motors
-    std::unique_ptr<Motor> base, shoulder, elbow, wrist;
-    std::vector<std::unique_ptr<Motor>> base_joint, shoulder_joint, elbow_joint, wrist_joint;
+    std::unique_ptr<Motor> base_left,base_right,
+                            shoulder_left, shoulder_right,
+                            elbow_left, elbow_right,
+                            wrist;
+
+    std::vector<MOTOR_ID> base_joint, shoulder_joint, elbow_joint, wrist_joint;
 
     // Current State
     ERROR currentState;
@@ -105,6 +109,18 @@ void Controller::resetError() {
 
 __uint8_t Controller::getCurrentArmStatus() const {
     return currentState;
+}
+
+bool Controller::moveBase(const float angle) {
+    moveSyncMotor(base_joint,angle);
+}
+
+bool Controller::moveShoulder(const float angle) {
+    moveSyncMotor(shoulder_joint,angle);
+}
+
+bool Controller::moveElbow(const float angle) {
+    moveSyncMotor(elbow_joint,angle);
 }
 
 #endif //ARMCONTROLLER_CONTROLLER_H

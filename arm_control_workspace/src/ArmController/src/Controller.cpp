@@ -10,10 +10,16 @@
 #include "Controller.h"
 
 Controller::Controller()
-:base(std::make_unique<Motor>(static_cast<__uint8_t >(BASE_ID),-1,-1,1,80,77)),
- shoulder(std::make_unique<Motor>(static_cast<__uint8_t>(SHOULDER_ID),181,783,1,80,177)),
- elbow(std::make_unique<Motor>(static_cast<__uint8_t>(ELBOW_ID),181,783,1,80,177)),
+:base_left(std::make_unique<Motor>(static_cast<__uint8_t >(BASE_LEFT_ID),-1,-1,1,80,77)),
+ base_right(std::make_unique<Motor>(static_cast<__uint8_t >(BASE_RIGHT_ID),-1,-1,1,80,77)),
+ shoulder_left(std::make_unique<Motor>(static_cast<__uint8_t>(SHOULDER_LEFT_ID),181,783,1,80,177)),
+ shoulder_right(std::make_unique<Motor>(static_cast<__uint8_t>(SHOULDER_RIGHT_ID),181,783,1,80,177)),
+ elbow_left(std::make_unique<Motor>(static_cast<__uint8_t>(ELBOW_LEFT_ID),181,783,1,80,177)),
+ elbow_right(std::make_unique<Motor>(static_cast<__uint8_t>(ELBOW_RIGHT_ID),181,783,1,80,177)),
  wrist(std::make_unique<Motor>(static_cast<__uint8_t>(WRIST_ID),0,0)),
+ base_joint(std::vector<MOTOR_ID>()),
+ shoulder_joint(std::vector<MOTOR_ID>()),
+ elbow_joint(std::vector<MOTOR_ID>()),
  currentState(NO_ERROR),
  BASE_START_POSITION(0),
  SHOULDER_START_POSITION(0),
@@ -21,24 +27,39 @@ Controller::Controller()
  WRIST_START_POSITION(0)
 {
     if( dxl_initialize(USB2DYNAMIXEL_ID,1) != 0 ){
-        base->initializeMotor();
-        shoulder->initializeMotor();
-        elbow->initializeMotor();
+        base_left->initializeMotor();
+        base_right->initializeMotor();
+        shoulder_left->initializeMotor();
+        shoulder_right->initializeMotor();
+        elbow_left->initializeMotor();
+        elbow_right->initializeMotor();
         wrist->initializeMotor();
     }
 
-    if( base->isOpened())
-        base->setCurrentAngle(BASE_START_POSITION);
+    // The base
+    if( base_left->isOpened() && base_right->isOpened()) {
+        base_joint.push_back(MOTOR_ID(BASE_LEFT_ID));
+        base_joint.push_back(MOTOR_ID(BASE_RIGHT_ID));
+        moveBase(BASE_START_POSITION);
+    }
     else
         currentState = BASE_ERROR;
 
-    if( shoulder->isOpened())
-        shoulder->setCurrentAngle(SHOULDER_START_POSITION);
+    // The shoulder
+    if( shoulder_left->isOpened() && shoulder_right->isOpened()) {
+        shoulder_joint.push_back(MOTOR_ID(SHOULDER_LEFT_ID));
+        shoulder_joint.push_back(MOTOR_ID(SHOULDER_RIGHT_ID));
+        moveShoulder(SHOULDER_START_POSITION);
+    }
     else
         currentState = SHOULDER_ERROR;
 
-    if( elbow->isOpened())
-        elbow->setCurrentAngle(ELBOW_START_POSITION);
+    // The elbow
+    if( elbow_left->isOpened() && elbow_right->isOpened()) {
+        elbow_joint.push_back(MOTOR_ID(ELBOW_LEFT_ID));
+        elbow_joint.push_back(MOTOR_ID(ELBOW_RIGHT_ID));
+        moveElbow(ELBOW_START_POSITION);
+    }
     else
         currentState = ELBOW_ERROR;
 
@@ -60,7 +81,7 @@ Controller::~Controller() {
 
 bool Controller::moveAbsoluteMotor(const Controller::MOTOR_ID& motor, const float targetAngle) {
     ROS_INFO("Moving absolute motor");
-    if(motor.id<BASE_ID || motor.id>WRIST_ID ) {
+    if(motor.id<BASE_RIGHT_ID || motor.id>WRIST_ID ) {
         ROS_WARN("Motor ID is no within boundaries");
         return false;
     }
@@ -75,7 +96,7 @@ bool Controller::moveAbsoluteMotor(const Controller::MOTOR_ID& motor, const floa
 
 bool Controller::moveIncrementMotor(const Controller::MOTOR_ID& motor, const float increment){
     ROS_INFO("Moving increment motor");
-    if(motor.id<BASE_ID || motor.id>WRIST_ID ) {
+    if(motor.id<BASE_RIGHT_ID || motor.id>WRIST_ID ) {
         ROS_WARN("Motor ID is no within boundaries");
         return false;
     }
@@ -103,16 +124,28 @@ bool Controller::moveRelativeTool(const float tX, const float tY, const float tZ
 Motor* Controller::getMotor(const Controller::MOTOR_ID& motor)const{
     Motor* motorPtr;
     switch(motor.id){
-        case (BASE_ID):{
-            motorPtr = base.get();
+        case (BASE_LEFT_ID):{
+            motorPtr = base_left.get();
             break;
         }
-        case (SHOULDER_ID):{
-            motorPtr = shoulder.get();
+        case (BASE_RIGHT_ID):{
+            motorPtr = base_right.get();
             break;
         }
-        case (ELBOW_ID):{
-            motorPtr = elbow.get();
+        case (SHOULDER_LEFT_ID):{
+            motorPtr = shoulder_left.get();
+            break;
+        }
+        case (SHOULDER_RIGHT_ID):{
+            motorPtr = shoulder_right.get();
+            break;
+        }
+        case (ELBOW_LEFT_ID):{
+            motorPtr = elbow_left.get();
+            break;
+        }
+        case (ELBOW_RIGHT_ID):{
+            motorPtr = elbow_right.get();
             break;
         }
         case (WRIST_ID):{
@@ -128,13 +161,12 @@ bool Controller::moveSyncMotor(const std::vector<MOTOR_ID>& motors, const float 
     ROS_INFO("Moving motors synchro");
     auto NUM_ACTUATOR = motors.size();
 
-    auto id = std::vector<int>(), phase = std::vector<int>();
+    auto id = std::vector<int>();
 
     auto i = 0;
     for( i=0; i<NUM_ACTUATOR; i++ )
     {
         id.push_back(motors[i].id);
-        //phase.push_back()phase[i] = 2* PI * (float)i / (float)NUM_ACTUATOR;
     }
 
     ROS_INFO("Before packet");
@@ -156,11 +188,4 @@ bool Controller::moveSyncMotor(const std::vector<MOTOR_ID>& motors, const float 
 
     ROS_INFO("Before sending packet");
     dxl_txrx_packet();
-}
-
-bool Controller::moveBase(const float angle) {
-    auto motors = std::vector<MOTOR_ID>();
-    motors.push_back(MOTOR_ID(BASE_ID));
-    motors.push_back(MOTOR_ID(SHOULDER_ID));
-    moveSyncMotor(motors,angle);
 }
