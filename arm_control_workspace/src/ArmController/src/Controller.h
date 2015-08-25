@@ -11,10 +11,10 @@
 #define ARMCONTROLLER_CONTROLLER_H
 
 
-#include "../Motor/Motor.h"
+#include "motor/Motor.h"
 #include "ros/ros.h"
 
-#include "../util/Pointers.h"
+#include "util/Pointers.h"
 
 namespace arm_controler {
 

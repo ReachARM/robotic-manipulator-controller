@@ -12,7 +12,7 @@
 
 #include "ros/ros.h"
 
-#include "Controller.h"
+#include "../Controller.h"
 
 #include "ArmController/MoveRelativeTool.h"
 #include "ArmController/MoveAbsoluteMotor.h"

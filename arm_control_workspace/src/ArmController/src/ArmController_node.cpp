@@ -8,7 +8,7 @@
  */
 
 
-#include "RosServiceManager.h"
+#include "ros/RosServiceManager.h"
 #include "Controller.h"
 
 #include "ros/ros.h"

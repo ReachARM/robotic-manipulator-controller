@@ -34,10 +34,11 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-file(GLOB MOTOR Motor/*.h Motor/*.cpp)
+file(GLOB ROS src/ros/*.h src/ros/*.cpp)
+file(GLOB MOTOR src/motor/*.h src/motor/*.cpp)
 file(GLOB CONTROLLER src/*.h src/*.cpp)
 
-add_executable(ArmController_node src/ArmController_node.cpp ${CONTROLLER} ${MOTOR})
+add_executable(ArmController_node src/ArmController_node.cpp ${CONTROLLER} ${MOTOR} ${ROS})
 
 add_dependencies(ArmController_node ArmController_generate_messages_cpp)
 
