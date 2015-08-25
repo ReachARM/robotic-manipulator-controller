@@ -181,7 +181,7 @@ inline float arm_controler::Motor::getCurrentAngle() const {
 
         return  angle_offset - current_angle;
     } else {
-        ROS_WARN("Error code is : ", dxl_get_result());
+        ROS_WARN("Error code is : %d ", dxl_get_result());
         ROS_WARN("Error while reading angle on Motor:%d", motor_id);
     }
     return -1.0F;
