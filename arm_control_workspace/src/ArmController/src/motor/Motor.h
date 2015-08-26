@@ -178,7 +178,6 @@ inline float arm_controler::Motor::getCurrentAngle() const {
     auto  angleRead = dxl_read_word(motor_id, PRESENT_POSITION_L);
     auto current_angle = static_cast<float>(dxl_read_word(motor_id, PRESENT_POSITION_L)) * STEP_PRECISION;
     if( dxl_get_result() == COMM_RXSUCCESS ) {
-
         return  angle_offset - current_angle;
     } else {
         ROS_WARN("Error code is : %d ", dxl_get_result());
@@ -192,7 +191,7 @@ inline bool arm_controler::Motor::isOpened() const {
 }
 
 inline float arm_controler::Motor::getRelativeMotorAngle(const float angle) const {
-
+    return 0.0f; // TODO
 }
 
 #endif //ARMCONTROLLER_MOTOR_H
