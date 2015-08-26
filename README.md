@@ -19,12 +19,11 @@ This project uses the following libraries or tools :
 * [ROS Indigo](www.ros.org) - Indigo release of the Robot Operating System. 
 * [C++] - The programming language used by this software is C++. 
     * Future iterations will migrate the code to *C++11* and *C++14* standards.
-* [USB2Dynamixel] - Communication between the computer and the servos through USB using the Robotis USB2Dynamixel.
+* [USB2Dynamixel](http://support.robotis.com/en/product/auxdevice/interface/usb2dxl_manual.htm) - Communication between the computer and the servos through USB using the Robotis USB2Dynamixel.
 * [Orocos-KDL](http://www.orocos.org/kdl) - Kinematics and dynamics library for robotics. 
-* [DXL library] - Dynamixel SDK driver for Linux based system.
-* [rViz] - Vizualisation app used to test the kinematic equations.
-* [URDF] - XML based descriptive file of the robot model used by rViz.
-* [MATLAB] - Computing language used for modeling of kinematics equations.
+* [DXL library](http://support.robotis.com/en/software/dynamixel_sdk/usb2dynamixel/usb2dxl_linux.htm) - Dynamixel SDK driver for Linux based system.
+* [rViz](http://wiki.ros.org/rviz) - Vizualisation app used to test the kinematic equations.
+* [URDF](http://wiki.ros.org/urdf) - XML based descriptive file of the robot model used by rViz.
 
 You can find the project at [robotic-manipulator-controller](https://github.com/kritchie/robotic-manipulator-controller) on GitHub.
 
