@@ -3,3 +3,7 @@
 //
 
 #include "RosRobotStatePublisher.h"
+
+arm_controller::RosRobotStatePublisher::RosRobotStatePublisher(const std::string& urdfFilepath)
+:publish(false)
+{}

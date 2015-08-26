@@ -16,12 +16,12 @@ The requirements for this project are :
 
 This project uses the following libraries or tools : 
 
-* [ROS Indigo] - Indigo release of the Robot Operating System. 
+* [ROS Indigo](www.ros.org) - Indigo release of the Robot Operating System. 
 * [C++] - The programming language used by this software is C++. 
     * Future iterations will migrate the code to *C++11* and *C++14* standards.
 * [USB2Dynamixel] - Communication between the computer and the servos through USB using the Robotis USB2Dynamixel.
+* [Orocos-KDL](http://www.orocos.org/kdl) - Kinematics and dynamics library for robotics. 
 * [DXL library] - Dynamixel SDK driver for Linux based system.
-* [ROS] - Robot operating system.
 * [rViz] - Vizualisation app used to test the kinematic equations.
 * [URDF] - XML based descriptive file of the robot model used by rViz.
 * [MATLAB] - Computing language used for modeling of kinematics equations.

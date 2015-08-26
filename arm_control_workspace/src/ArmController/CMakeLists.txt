@@ -34,6 +34,11 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
+find_package( PkgConfig )
+pkg_check_modules( EIGEN3 REQUIRED eigen3 )
+include_directories( ${EIGEN3_INCLUDE_DIRS} )
+SET(KDL_LIBRARIES "/opt/ros/indigo/lib/liborocos-kdl.so")
+
 file(GLOB ROS src/ros/*.h src/ros/*.cpp)
 file(GLOB MOTOR src/motor/*.h src/motor/*.cpp)
 file(GLOB CONTROLLER src/*.h src/*.cpp)
@@ -44,5 +49,6 @@ add_dependencies(ArmController_node ArmController_generate_messages_cpp)
 
 target_link_libraries(ArmController_node
    ${catkin_LIBRARIES}
+   ${KDL_LIBRARIES}
    dxl
 )
