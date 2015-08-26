@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <iostream>
 
-namespace arm_controler {
+namespace arm_controller {
 
     class Motor {
 
@@ -120,7 +120,7 @@ namespace arm_controler {
 
 // INLINES
 
-inline void arm_controler::Motor::halt() {
+inline void arm_controller::Motor::halt() {
     if( opened ) {
         auto current = dxl_read_word(motor_id, PRESENT_POSITION_L);
         dxl_write_word(motor_id, GOAL_POSITION_L, current);
@@ -129,7 +129,7 @@ inline void arm_controler::Motor::halt() {
     }
 }
 
-inline void arm_controler::Motor::setStep(const int step) {
+inline void arm_controller::Motor::setStep(const int step) {
     if( opened ) {
         if (step > lowStepLimit && step < highStepLimit)
             dxl_write_word(motor_id, GOAL_POSITION_L, step);
@@ -138,7 +138,7 @@ inline void arm_controler::Motor::setStep(const int step) {
     }
 }
 
-inline void arm_controler::Motor::setSpeed( const int speed ){
+inline void arm_controller::Motor::setSpeed( const int speed ){
     if( opened ) {
         if (speed >= 0 && speed < speedRpmLimit)
             dxl_write_word(motor_id, MOVING_SPEED_L, speed);
@@ -149,7 +149,7 @@ inline void arm_controler::Motor::setSpeed( const int speed ){
     }
 }
 
-inline void arm_controler::Motor::setIncrementAngle(const float increment){
+inline void arm_controller::Motor::setIncrementAngle(const float increment){
     if( opened ){
         auto currentAngle = getCurrentAngle();
         ROS_INFO("Current angle %f", currentAngle);
@@ -160,11 +160,11 @@ inline void arm_controler::Motor::setIncrementAngle(const float increment){
     }
 }
 
-inline __uint8_t arm_controler::Motor::getCurrentID() const {
+inline __uint8_t arm_controller::Motor::getCurrentID() const {
     return motor_id;
 }
 
-inline int arm_controler::Motor::getCurrentSpeed() const {
+inline int arm_controller::Motor::getCurrentSpeed() const {
     int current_speed = dxl_read_word(motor_id,MOVING_SPEED_L);
     if( dxl_get_result() == COMM_RXSUCCESS ) {
         return current_speed;
@@ -174,7 +174,7 @@ inline int arm_controler::Motor::getCurrentSpeed() const {
     return -1;
 }
 
-inline float arm_controler::Motor::getCurrentAngle() const {
+inline float arm_controller::Motor::getCurrentAngle() const {
     auto  angleRead = dxl_read_word(motor_id, PRESENT_POSITION_L);
     auto current_angle = static_cast<float>(dxl_read_word(motor_id, PRESENT_POSITION_L)) * STEP_PRECISION;
     if( dxl_get_result() == COMM_RXSUCCESS ) {
@@ -186,11 +186,11 @@ inline float arm_controler::Motor::getCurrentAngle() const {
     return -1.0F;
 }
 
-inline bool arm_controler::Motor::isOpened() const {
+inline bool arm_controller::Motor::isOpened() const {
     return opened;
 }
 
-inline float arm_controler::Motor::getRelativeMotorAngle(const float angle) const {
+inline float arm_controller::Motor::getRelativeMotorAngle(const float angle) const {
     return 0.0f; // TODO
 }
 

@@ -12,7 +12,7 @@
 #include <iostream>
 
 // CTOR
-arm_controler::Motor::Motor(const __uint8_t id, const float lowAngleLimit, const float highAngleLimit, const int defaultBaurate, const int speedRpmLimit, const int angle_offset_)
+arm_controller::Motor::Motor(const __uint8_t id, const float lowAngleLimit, const float highAngleLimit, const int defaultBaurate, const int speedRpmLimit, const int angle_offset_)
 :motor_id(id),
  lowStepLimit(lowAngleLimit),
  highStepLimit(highAngleLimit),
@@ -24,10 +24,10 @@ angle_offset(angle_offset_)
 
 //DTOR
 
-arm_controler::Motor::~Motor() {
+arm_controller::Motor::~Motor() {
 }
 
-void arm_controler::Motor::initializeMotor(){
+void arm_controller::Motor::initializeMotor(){
     // Check if current angle is within limits
     auto currentAngle = getCurrentAngle();
     if(lowStepLimit != INFINITE_BOUNDARIES && highStepLimit != INFINITE_BOUNDARIES) {
@@ -70,7 +70,7 @@ void arm_controler::Motor::initializeMotor(){
     }
 }
 
-void arm_controler::Motor::PrintCommStatus( const int CommStatus) const
+void arm_controller::Motor::PrintCommStatus( const int CommStatus) const
 {
     switch(CommStatus)
     {
@@ -105,7 +105,7 @@ void arm_controler::Motor::PrintCommStatus( const int CommStatus) const
 }
 
 // Print error bit of status packet
-void arm_controler::Motor::PrintErrorCode() const
+void arm_controller::Motor::PrintErrorCode() const
 {
     if(dxl_get_rxpacket_error(ERRBIT_VOLTAGE) == 1)
         printf("Input voltage error!\n");
@@ -129,7 +129,7 @@ void arm_controler::Motor::PrintErrorCode() const
         printf("Instruction code error!\n");
 }
 
-void arm_controler::Motor::setCurrentAngle(const float angle) {
+void arm_controller::Motor::setCurrentAngle(const float angle) {
     if( opened ){
         ROS_INFO("Angle : %f", angle);
         if(lowStepLimit != INFINITE_BOUNDARIES && highStepLimit != INFINITE_BOUNDARIES) {

@@ -21,13 +21,13 @@
 #include "ArmController/GetArmStatus.h"
 #include "ArmController/GetMotorAngle.h"
 
-namespace arm_controler {
+namespace arm_controller {
 
     class RosServiceManager {
 
     public:
 
-        RosServiceManager(Controller *_controller);
+        RosServiceManager(Controller *controller);
 
         void initServices(ros::NodeHandle *nodeHandlePtr);
 

@@ -16,7 +16,7 @@
 
 #include "util/Pointers.h"
 
-namespace arm_controler {
+namespace arm_controller {
 
     class Controller {
 
@@ -83,8 +83,8 @@ namespace arm_controler {
 
         Motor *getMotor(const MOTOR_ID &motor) const;
 
+        // Locked methods
         Controller &operator==(const Controller &);
-
         Controller(const Controller &);
 
         // The Motors
@@ -111,27 +111,27 @@ namespace arm_controler {
 
 }
 
-float arm_controler::Controller::getMotorCurrentAngle(const Controller::MOTOR_ID& motor)const {
+float arm_controller::Controller::getMotorCurrentAngle(const Controller::MOTOR_ID& motor)const {
     return getMotor(motor)->getCurrentAngle();
 }
 
-void arm_controler::Controller::resetError() {
+void arm_controller::Controller::resetError() {
     currentState = NO_ERROR;
 }
 
-__uint8_t arm_controler::Controller::getCurrentArmStatus() const {
+__uint8_t arm_controller::Controller::getCurrentArmStatus() const {
     return currentState;
 }
 
-bool arm_controler::Controller::moveBase(const float angle) {
+bool arm_controller::Controller::moveBase(const float angle) {
     moveSyncMotor(base_joint,angle);
 }
 
-bool arm_controler::Controller::moveShoulder(const float angle) {
+bool arm_controller::Controller::moveShoulder(const float angle) {
     moveSyncMotor(shoulder_joint,angle);
 }
 
-bool arm_controler::Controller::moveElbow(const float angle) {
+bool arm_controller::Controller::moveElbow(const float angle) {
     moveSyncMotor(elbow_joint,angle);
 }
 

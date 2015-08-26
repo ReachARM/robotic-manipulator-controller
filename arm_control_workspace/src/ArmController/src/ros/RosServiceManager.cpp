@@ -9,12 +9,12 @@
 
 #include "RosServiceManager.h"
 
-arm_controler::RosServiceManager::RosServiceManager(Controller * _controller)
-:controller(_controller),
+arm_controller::RosServiceManager::RosServiceManager(Controller * controller)
+:controller(controller),
 isInit(false)
 { ROS_INFO("Creation of the RosServiceManager."); }
 
-void arm_controler::RosServiceManager::initServices(ros::NodeHandle* nodeHandlePtr) {
+void arm_controller::RosServiceManager::initServices(ros::NodeHandle* nodeHandlePtr) {
     if(!isInit){
         if( nodeHandlePtr != nullptr ) {
             services.push_back(nodeHandlePtr->advertiseService("move_absolute_motor",&RosServiceManager::moveAbsoluteMotor, this));
@@ -32,7 +32,7 @@ void arm_controler::RosServiceManager::initServices(ros::NodeHandle* nodeHandleP
     }
 }
 
-bool arm_controler::RosServiceManager::moveRelativeTool(ArmController::MoveRelativeTool::Request &req,
+bool arm_controller::RosServiceManager::moveRelativeTool(ArmController::MoveRelativeTool::Request &req,
                       ArmController::MoveRelativeTool::Response &res){
     ROS_INFO("Request for relative tool movement");
     ROS_INFO("tx: %d    ty: %d    tz:%d",(int)req.tx,(int)req.ty,(int)req.tz);
@@ -41,7 +41,7 @@ bool arm_controler::RosServiceManager::moveRelativeTool(ArmController::MoveRelat
     return true;
 }
 
-bool arm_controler::RosServiceManager::moveAbsoluteMotor(ArmController::MoveAbsoluteMotor::Request &req,
+bool arm_controller::RosServiceManager::moveAbsoluteMotor(ArmController::MoveAbsoluteMotor::Request &req,
                        ArmController::MoveAbsoluteMotor::Response &res){
     ROS_INFO("Request for absolute motor movement");
     ROS_INFO("Motor: %d   Angle: %f",(int)req.motorID,(float)req.angle);
@@ -49,7 +49,7 @@ bool arm_controler::RosServiceManager::moveAbsoluteMotor(ArmController::MoveAbso
     return true;
 }
 
-bool arm_controler::RosServiceManager::getArmStatus(ArmController::GetArmStatus::Request &req,
+bool arm_controller::RosServiceManager::getArmStatus(ArmController::GetArmStatus::Request &req,
                   ArmController::GetArmStatus::Response &res){
     ROS_INFO("Request for arm status");
     __uint8_t status = controller->getCurrentArmStatus();
@@ -58,7 +58,7 @@ bool arm_controler::RosServiceManager::getArmStatus(ArmController::GetArmStatus:
     return true;
 }
 
-bool arm_controler::RosServiceManager::getMotorAngle(ArmController::GetMotorAngle::Request &req,
+bool arm_controller::RosServiceManager::getMotorAngle(ArmController::GetMotorAngle::Request &req,
                    ArmController::GetMotorAngle::Response &res){
     ROS_INFO("Request for motor angle");
     ROS_INFO("Motor: %d", req.motorID);
@@ -66,7 +66,7 @@ bool arm_controler::RosServiceManager::getMotorAngle(ArmController::GetMotorAngl
     return true;
 }
 
-bool arm_controler::RosServiceManager::moveIncrementMotor(ArmController::MoveIncrementMotor::Request &req,
+bool arm_controller::RosServiceManager::moveIncrementMotor(ArmController::MoveIncrementMotor::Request &req,
                         ArmController::MoveIncrementMotor::Response &res){
     ROS_INFO("Request for increment motor movement");
     ROS_INFO("Motor :%d    Angle: %f",(int)req.motorID,(float)req.increment);
@@ -74,7 +74,7 @@ bool arm_controler::RosServiceManager::moveIncrementMotor(ArmController::MoveInc
     return true;
 }
 
-bool arm_controler::RosServiceManager::moveBase(ArmController::MoveBase::Request &req,
+bool arm_controller::RosServiceManager::moveBase(ArmController::MoveBase::Request &req,
               ArmController::MoveBase::Response &res){
     ROS_INFO("Request for moving base at angle : %f", (float)req.angle);
     if( (float)req.angle > -1 && (float) req.angle < 361 )
