@@ -1,11 +1,13 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(ArmController)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y -pthread")
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   message_generation
+  kdl_parser
+  robot_state_publisher
 )
 
 add_service_files(

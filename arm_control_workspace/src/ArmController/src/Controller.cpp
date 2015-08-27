@@ -156,6 +156,29 @@ arm_controller::Motor* arm_controller::Controller::getMotor(const Controller::MO
     return motorPtr;
 }
 
+const std::vector<arm_controller::Controller::MOTOR_ID>* arm_controller::Controller::getJoint(const Controller::JOINT_ID &joint) const {
+    const std::vector<Controller::MOTOR_ID>* ptr = nullptr;
+    switch(joint.id){
+        case (BASE_JOINT_ID):{
+            ptr = &base_joint;
+            break;
+        }
+        case (SHOULDER_JOINT_ID):{
+            ptr = &shoulder_joint;
+            break;
+        }
+        case (ELBOW_JOINT_ID):{
+            ptr = &elbow_joint;
+            break;
+        }
+        case (WRIST_JOINT_ID):{
+            ptr = &wrist_joint;
+            break;
+        }
+    }
+    return ptr;
+}
+
 bool arm_controller::Controller::moveSyncMotor(const std::vector<MOTOR_ID>& motors, const float angle) {
 
     ROS_INFO("Moving motors synchro");

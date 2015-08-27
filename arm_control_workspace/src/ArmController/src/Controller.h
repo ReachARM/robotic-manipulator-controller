@@ -24,8 +24,12 @@ namespace arm_controller {
 
         struct MOTOR_ID {
             int id;
-
             explicit MOTOR_ID(const int _id) : id(_id) { }
+        };
+
+        struct JOINT_ID {
+            int id;
+            explicit JOINT_ID(const int _id) : id(_id) {}
         };
 
         Controller();
@@ -49,7 +53,13 @@ namespace arm_controller {
             ELBOW_LEFT,
             ELBOW_RIGHT,
             WRIST
+        };
 
+        enum JOINT {
+            BASE_JOINT_ID = 0,
+            SHOULDER_JOINT_ID = 1,
+            ELBOW_JOINT_ID = 2,
+            WRIST_JOINT_ID = 3
         };
 
         enum ERROR {
@@ -63,6 +73,8 @@ namespace arm_controller {
         inline __uint8_t getCurrentArmStatus() const;
 
         inline float getMotorCurrentAngle(const MOTOR_ID &motor) const;
+
+        inline float getJointCurrentAngle( const JOINT_ID &joint) const;
 
         bool moveRelativeTool(const float tX = 0.0F, const float tY = 0.0F, const float tZ = 0.0F,
                               const float roll = 0.0F, const float pitch = 0.0F, const float yaw = 0.0F);
@@ -82,6 +94,8 @@ namespace arm_controller {
         bool moveSyncMotor(const std::vector<MOTOR_ID> &motors, const float angle);
 
         Motor *getMotor(const MOTOR_ID &motor) const;
+
+        const std::vector<MOTOR_ID>* getJoint(const JOINT_ID &joint) const;
 
         // Locked methods
         Controller &operator==(const Controller &);
@@ -113,6 +127,12 @@ namespace arm_controller {
 
 float arm_controller::Controller::getMotorCurrentAngle(const Controller::MOTOR_ID& motor)const {
     return getMotor(motor)->getCurrentAngle();
+}
+
+float arm_controller::Controller::getJointCurrentAngle(const JOINT_ID &joint) const {
+    auto angle_left_servo = getMotorCurrentAngle(getJoint(joint)->at(0));
+    auto angle_right_servo = getMotorCurrentAngle(getJoint(joint)->at(1));
+    return static_cast<float>((angle_left_servo+angle_right_servo)/2.0);
 }
 
 void arm_controller::Controller::resetError() {

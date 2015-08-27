@@ -10,8 +10,8 @@
 
 #include "ros/RosServiceManager.h"
 #include "Controller.h"
-
 #include "ros/ros.h"
+#include "ros/RosRobotStatePublisher.h"
 
 int main(int argc, char** argv){
 
@@ -27,6 +27,9 @@ int main(int argc, char** argv){
 
     ROS_INFO("Initializing services");
     rosServiceManager.initServices(&n);
+
+    ROS_INFO("Starting the robot state publisher");
+    arm_controller::RosRobotStatePublisher robotStatePublisher("...",&controller); // TODO FIXME with relative path
 
     ros::spin();
     return 0;

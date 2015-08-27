@@ -5,10 +5,13 @@
 #ifndef ARMCONTROLLER_ROSROBOTSTATEPUBLISHER_H
 #define ARMCONTROLLER_ROSROBOTSTATEPUBLISHER_H
 
-#include "kdl
+#include "kdl/tree.hpp"
+#include "../Controller.h"
+
 #include <kdl_parser/kdl_parser.hpp>
 #include <robot_state_publisher/robot_state_publisher.h>
 
+#include <thread>
 #include <string>
 
 namespace arm_controller {
@@ -17,9 +20,10 @@ namespace arm_controller {
 
     public:
 
-        RosRobotStatePublisher(const std::string &urdfFilepath);
+        ~RosRobotStatePublisher();
+        RosRobotStatePublisher(const std::string &urdfFilepath, const arm_controller::Controller* controller);
 
-        void publish();
+        void InitPublisher();
 
     private :
 
@@ -30,7 +34,17 @@ namespace arm_controller {
         RosRobotStatePublisher(const RosRobotStatePublisher &);
         RosRobotStatePublisher &operator=(const RosRobotStatePublisher &);
 
+        bool isInit;
         bool publish;
+
+        std::string urdfPath;
+
+        KDL::Tree robotKDLTree;
+
+        const arm_controller::Controller* controller;
+
+        std::unique_ptr<robot_state_publisher::RobotStatePublisher> publisher;
+        std::thread publishingThread;
 
     };
 }
