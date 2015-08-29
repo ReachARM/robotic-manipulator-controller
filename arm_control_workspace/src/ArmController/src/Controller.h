@@ -12,6 +12,7 @@
 
 
 #include "motor/Motor.h"
+#include "motor/AX12A.h"
 #include "ros/ros.h"
 
 #include "util/Pointers.h"
@@ -32,18 +33,23 @@ namespace arm_controller {
             explicit JOINT_ID(const int _id) : id(_id) {}
         };
 
-        Controller();
+        enum OPERATION_MODE{
+            SIMULATION_MODE,
+            AX12A_MODE
+        };
+
+        Controller(const OPERATION_MODE& mode);
 
         ~Controller(); // dxl_terminate();
 
-        static const __uint8_t USB2DYNAMIXEL_ID = 0;
-        static const __uint8_t BASE_LEFT_ID = USB2DYNAMIXEL_ID + 1;
-        static const __uint8_t BASE_RIGHT_ID = USB2DYNAMIXEL_ID + 2;
-        static const __uint8_t SHOULDER_LEFT_ID = USB2DYNAMIXEL_ID + 3;
-        static const __uint8_t SHOULDER_RIGHT_ID = USB2DYNAMIXEL_ID + 4;
-        static const __uint8_t ELBOW_LEFT_ID = USB2DYNAMIXEL_ID + 5;
-        static const __uint8_t ELBOW_RIGHT_ID = USB2DYNAMIXEL_ID + 6;
-        static const __uint8_t WRIST_ID = USB2DYNAMIXEL_ID + 7;
+        static const int USB2DYNAMIXEL_ID = 0;
+        static const int BASE_LEFT_ID = USB2DYNAMIXEL_ID + 1;
+        static const int BASE_RIGHT_ID = USB2DYNAMIXEL_ID + 2;
+        static const int SHOULDER_LEFT_ID = USB2DYNAMIXEL_ID + 3;
+        static const int SHOULDER_RIGHT_ID = USB2DYNAMIXEL_ID + 4;
+        static const int ELBOW_LEFT_ID = USB2DYNAMIXEL_ID + 5;
+        static const int ELBOW_RIGHT_ID = USB2DYNAMIXEL_ID + 6;
+        static const int WRIST_ID = USB2DYNAMIXEL_ID + 7;
 
         enum MOTOR {
             BASE_LEFT,
@@ -70,6 +76,8 @@ namespace arm_controller {
             WRIST_ERROR
         };
 
+
+
         inline __uint8_t getCurrentArmStatus() const;
 
         inline float getMotorCurrentAngle(const MOTOR_ID &motor) const;
@@ -90,6 +98,10 @@ namespace arm_controller {
         inline bool moveElbow(const float angle);
 
     private:
+
+
+
+        OPERATION_MODE currentOperationMode;
 
         bool moveSyncMotor(const std::vector<MOTOR_ID> &motors, const float angle);
 

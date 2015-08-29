@@ -20,7 +20,7 @@ int main(int argc, char** argv){
     ros::NodeHandle n;
 
     ROS_INFO("Creating the controller");
-    arm_controller::Controller controller;
+    arm_controller::Controller controller(arm_controller::Controller::OPERATION_MODE::SIMULATION_MODE);
 
     ROS_INFO("Creating the RosServiceManager");
     arm_controller::RosServiceManager rosServiceManager(&controller);
