@@ -1,0 +1,42 @@
+<robot name="gpa546">
+	<link name="base_link">
+	</link>
+
+
+	<!-- JOINT2 -->
+	<link name="Base">
+	</link>
+	<joint name="joint_piece1" type="fixed">
+		<parent link="base_link"/>
+		<child link="Base"/>
+		<origin xyz="0 0 0" rpy="0 0 0"/>
+	</joint>
+
+	<!-- JOINT2 -->
+	<link name="Epaule">
+	</link>
+	<joint name="joint_piece2" type="fixed">
+		<parent link="Base"/>
+		<child link="Epaule"/>
+		<origin xyz="0 0 1" rpy="1.57079632679 0 1.57079632679"/>
+	</joint>
+
+	<!-- JOINT3 -->
+	<link name="Coude">
+	</link>
+	<joint name="joint_piece3" type="fixed">
+		<parent link="Epaule"/>
+		<child link="Coude"/>
+		<origin xyz="0 2 0" rpy="0 0 1.57079632679"/>
+	</joint>
+
+	<!-- JOINT3 -->
+	<link name="Outil">
+	</link>
+	<joint name="joint_piece4" type="fixed">
+		<parent link="Coude"/>
+		<child link="Outil"/>
+		<origin xyz="0 -2 0" rpy="1.57079632679 0 0"/>
+	</joint>
+
+</robot>

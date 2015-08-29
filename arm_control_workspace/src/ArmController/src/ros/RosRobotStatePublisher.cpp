@@ -14,18 +14,27 @@ arm_controller::RosRobotStatePublisher::RosRobotStatePublisher(const std::string
 {}
 
 arm_controller::RosRobotStatePublisher::~RosRobotStatePublisher() {
-    publish = false;
-    publishingThread.join();
-
+    try{
+        stopPublisher();
+    } catch(...){
+        ROS_ERROR("Error while closing the publishing thread");
+    }
+    ROS_INFO("Publisher was successfully closed");
 }
 
 void arm_controller::RosRobotStatePublisher::publishJoints() {
-    while(publish){
-        publisher.get()->publishFixedTransforms("");
+    if(isInit) {
+        ROS_INFO("Starting the state publisher");
+        while (publish) {
+            publisher.get()->publishFixedTransforms("");
+            usleep(1000);
+        }
+    } else {
+        ROS_WARN("Publisher is not initialized");
     }
 }
 
-void arm_controller::RosRobotStatePublisher::InitPublisher() {
+void arm_controller::RosRobotStatePublisher::initPublisher() {
     if(!isInit) {
         if (!kdl_parser::treeFromFile(urdfPath, robotKDLTree)) {
             ROS_ERROR("Failed to construct kdl tree");
@@ -35,7 +44,9 @@ void arm_controller::RosRobotStatePublisher::InitPublisher() {
                     new robot_state_publisher::RobotStatePublisher(robotKDLTree));
             publish = true;
             publishingThread = std::thread(&arm_controller::RosRobotStatePublisher::publishJoints, this);
+            publishingThread.detach();
             isInit = true;
+            ROS_INFO("Publisher successfully initialized");
         }
     } else {
         ROS_WARN("Publisher is already initialized");

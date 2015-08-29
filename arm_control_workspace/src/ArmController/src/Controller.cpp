@@ -68,6 +68,8 @@ arm_controller::Controller::Controller()
     else
         currentState = WRIST_ERROR;
 
+    // Insert Fallback to Sim mode here
+
 }
 
 arm_controller::Controller::~Controller() {

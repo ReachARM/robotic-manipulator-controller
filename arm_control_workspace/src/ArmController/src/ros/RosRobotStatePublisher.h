@@ -23,12 +23,13 @@ namespace arm_controller {
         ~RosRobotStatePublisher();
         RosRobotStatePublisher(const std::string &urdfFilepath, const arm_controller::Controller* controller);
 
-        void InitPublisher();
+        void initPublisher();
+
 
     private :
 
         void publishJoints();
-
+        inline void stopPublisher();
         // Locked methods
         RosRobotStatePublisher();
         RosRobotStatePublisher(const RosRobotStatePublisher &);
@@ -49,5 +50,9 @@ namespace arm_controller {
     };
 }
 
+void arm_controller::RosRobotStatePublisher::stopPublisher() {
+    publish = false;
+    publishingThread.join();
+}
 
 #endif //ARMCONTROLLER_ROSROBOTSTATEPUBLISHER_H
