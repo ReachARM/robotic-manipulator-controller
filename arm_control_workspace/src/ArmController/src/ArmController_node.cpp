@@ -13,14 +13,42 @@
 #include "ros/ros.h"
 #include "ros/RosRobotStatePublisher.h"
 
+const auto OPERATION_MODE_FLAG = std::string("mode");
+const auto SIMULATION_MODE = std::string("SIM");
+const auto AX12A_MODE = std::string("AX12A");
+
 int main(int argc, char** argv){
 
     ros::init(argc, argv, "ArmController_node");
 
-    ros::NodeHandle n;
+    auto n = ros::NodeHandle();
+
+    auto strOperationMode = std::string();
+    auto operationMode = arm_controller::Controller::OPERATION_MODE();
+
+    // If the name is invalid or the sequence throws and exception
+    // the Controller will be defaulted to Simulation mode
+    // IT MUST BE SPECIFIED to run in AX12A mode, otherwise it will
+    // run in Simulation mode
+    // use _mode:=AX12A on the command line after the rosrun command
+    try {
+        if (n.getParam(OPERATION_MODE_FLAG, strOperationMode)) {
+            if(strOperationMode.compare(SIMULATION_MODE)==0){
+                operationMode = arm_controller::Controller::OPERATION_MODE::SIMULATION_MODE;
+            } else if ( strOperationMode.compare(AX12A_MODE) == 0){
+                operationMode = arm_controller::Controller::OPERATION_MODE::AX12A_MODE;
+            } else {
+                operationMode = arm_controller::Controller::OPERATION_MODE::SIMULATION_MODE;
+            }
+        } else {
+            operationMode = arm_controller::Controller::OPERATION_MODE::SIMULATION_MODE;
+        }
+    } catch (ros::InvalidNameException){
+        operationMode = arm_controller::Controller::OPERATION_MODE::SIMULATION_MODE;
+    }
 
     ROS_INFO("Creating the controller");
-    arm_controller::Controller controller(arm_controller::Controller::OPERATION_MODE::SIMULATION_MODE);
+    arm_controller::Controller controller(operationMode);
 
     ROS_INFO("Creating the RosServiceManager");
     arm_controller::RosServiceManager rosServiceManager(&controller);

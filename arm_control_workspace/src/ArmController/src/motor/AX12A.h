@@ -159,6 +159,11 @@ inline float arm_controller::AX12A::getCurrentAngle() const {
     return -1.0F;
 }
 
+inline int arm_controller::AX12A::getCurrentStep() const {
+    auto motor_id = getCurrentID();
+    return dxl_read_word(motor_id, PRESENT_POSITION_L);
+}
+
 inline float arm_controller::AX12A::getRelativeMotorAngle(const float angle) const {
     return 0.0f; // TODO
 }

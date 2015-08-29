@@ -8,3 +8,16 @@
  */
 
 #include "SimMotor.h"
+
+arm_controller::SimMotor::SimMotor(const int ID, const int highAngleLimit, const int lowAngleLimit, const int angleOffset)
+ :Motor(ID),
+  highAngleLimit(highAngleLimit),
+  lowAngleLimit(lowAngleLimit),
+  angleOffset(angleOffset),
+  STEP_PRECISION(0.3500f),
+  currentAngle(0),
+  currentSpeed(0),
+  currentStep(0)
+{}
+
+arm_controller::SimMotor::~SimMotor() { }
