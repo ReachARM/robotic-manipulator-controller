@@ -9,14 +9,14 @@
 
 #include "AX12A.h"
 
-arm_controller::AX12A::AX12A( const int ID, const int defaultBaudrate, const int speedLimit, const int highAngleLimit, const int lowAngleLimit, const int angleOffset)
+arm_controller::AX12A::AX12A( const int ID, const int defaultBaudrate, const int speedLimit, const int highStepLimit, const int lowStepLimit, const int angleOffset)
 : Motor(ID),
-  lowAngleLimit(lowAngleLimit),
-  highAngleLimit(highAngleLimit),
+  lowAngleLimit(lowStepLimit/STEP_PRECISION),
+  highAngleLimit(highStepLimit/STEP_PRECISION),
   speedRpmLimit(speedRpmLimit),
   defaultBaudrate(defaultBaudrate),
-  lowStepLimit(lowAngleLimit/STEP_PRECISION),
-  highStepLimit(highAngleLimit/STEP_PRECISION),
+  lowStepLimit(lowStepLimit),
+  highStepLimit(highStepLimit),
   angleOffset(angleOffset)
 {}
 

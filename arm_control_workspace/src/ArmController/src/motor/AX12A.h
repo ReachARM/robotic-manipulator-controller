@@ -18,7 +18,7 @@ namespace arm_controller {
 
     public:
 
-        AX12A(const int ID, const int defaultBaudrate, const int speedLimit, const int highAngleLimit, const int lowAngleLimit, const int angleOffset);
+        AX12A(const int ID, const int defaultBaudrate, const int speedLimit, const int highStepLimit, const int lowStepLimit, const int angleOffset);
         virtual ~AX12A();
 
         virtual float getCurrentAngle() const override;

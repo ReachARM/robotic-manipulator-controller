@@ -13,6 +13,8 @@
 
 #include "motor/Motor.h"
 #include "motor/AX12A.h"
+#include "motor/SimMotor.h"
+
 #include "ros/ros.h"
 
 #include "util/Pointers.h"

@@ -22,7 +22,7 @@ arm_controller::Controller::Controller(const OPERATION_MODE& mode)
 {
     switch(currentOperationMode) {
         case(AX12A_MODE): {
-
+            ROS_INFO("Initializing AX12A mode");
             base_left = std::unique_ptr<AX12A>(new AX12A((BASE_LEFT_ID),1,80,-1,-1,77));
             base_right = std::unique_ptr<AX12A>(new AX12A((BASE_RIGHT_ID),1,80,-1,-1,77));
             shoulder_left = std::unique_ptr<AX12A>(new AX12A((SHOULDER_LEFT_ID),1,80,783,181,177));
@@ -75,6 +75,14 @@ arm_controller::Controller::Controller(const OPERATION_MODE& mode)
             break;
         }
         case (SIMULATION_MODE):{
+            ROS_INFO("Initializing simulation mode");
+            base_left = std::unique_ptr<SimMotor>(new SimMotor((BASE_LEFT_ID),-1,-1,77));
+            base_right = std::unique_ptr<SimMotor>(new SimMotor((BASE_RIGHT_ID),-1,-1,77));
+            shoulder_left = std::unique_ptr<SimMotor>(new SimMotor((SHOULDER_LEFT_ID),783,181,177));
+            shoulder_right = std::unique_ptr<SimMotor>(new SimMotor((SHOULDER_RIGHT_ID),783,181,177));
+            elbow_left = std::unique_ptr<SimMotor>(new SimMotor((ELBOW_LEFT_ID),783,181,177));
+            elbow_right = std::unique_ptr<SimMotor>(new SimMotor((ELBOW_RIGHT_ID),783,181,177));
+            wrist = std::unique_ptr<SimMotor>(new SimMotor((WRIST_ID),0,0,0));
             break;
         }
     }

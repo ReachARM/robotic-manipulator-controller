@@ -35,6 +35,8 @@ namespace arm_controller {
 
     private:
 
+        static const auto INFINITE_BOUNDARIES = -1;
+
         int highAngleLimit;
         int lowAngleLimit;
         int angleOffset;
@@ -70,11 +72,33 @@ inline float arm_controller::SimMotor::getRelativeMotorAngle(const float angle) 
     return 0; // TODO implement this !
 }
 
-inline void arm_controller::SimMotor::halt() {};
-inline void arm_controller::SimMotor::setStep(const int step) {};
-inline void arm_controller::SimMotor::setCurrentAngle(const float angle) {};
-inline void arm_controller::SimMotor::setIncrementAngle(const float increment) {};
-inline void arm_controller::SimMotor::setSpeed(const int speed) {};
-inline void arm_controller::SimMotor::initializeMotor() {};
+inline void arm_controller::SimMotor::halt() {
+
+}
+
+inline void arm_controller::SimMotor::setStep(const int step) {
+    setCurrentAngle(step*STEP_PRECISION);
+};
+
+inline void arm_controller::SimMotor::setCurrentAngle(const float angle) {
+    if( angle >= lowAngleLimit && angle <= highAngleLimit ){
+        currentAngle = angle;
+        currentStep = currentAngle/STEP_PRECISION;
+    } else {
+        ROS_WARN("Cannot set angle, not within boundaries");
+    }
+};
+
+inline void arm_controller::SimMotor::setIncrementAngle(const float increment) {
+    setCurrentAngle(currentAngle + increment);
+};
+
+inline void arm_controller::SimMotor::setSpeed(const int speed) {
+    currentSpeed = speed;
+}
+
+inline void arm_controller::SimMotor::initializeMotor() {
+    opened = true;
+}
 
 #endif //ARMCONTROLLER_SIMMOTOR_H

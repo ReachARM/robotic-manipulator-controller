@@ -31,19 +31,25 @@ int main(int argc, char** argv){
     // IT MUST BE SPECIFIED to run in AX12A mode, otherwise it will
     // run in Simulation mode
     // use _mode:=AX12A on the command line after the rosrun command
+    ROS_INFO("Getting operation mode...");
     try {
         if (n.getParam(OPERATION_MODE_FLAG, strOperationMode)) {
             if(strOperationMode.compare(SIMULATION_MODE)==0){
+                ROS_INFO("Setting simulation mode...");
                 operationMode = arm_controller::Controller::OPERATION_MODE::SIMULATION_MODE;
             } else if ( strOperationMode.compare(AX12A_MODE) == 0){
+                ROS_INFO("Setting AX-12A mode...");
                 operationMode = arm_controller::Controller::OPERATION_MODE::AX12A_MODE;
             } else {
+                ROS_INFO("Invalid operation mode... Setting simulation mode...");
                 operationMode = arm_controller::Controller::OPERATION_MODE::SIMULATION_MODE;
             }
         } else {
+            ROS_INFO("No operation mode specified... Setting simulation mode...");
             operationMode = arm_controller::Controller::OPERATION_MODE::SIMULATION_MODE;
         }
     } catch (ros::InvalidNameException){
+        ROS_INFO("Exception while getting operation mode... Setting simulation mode...");
         operationMode = arm_controller::Controller::OPERATION_MODE::SIMULATION_MODE;
     }
 
