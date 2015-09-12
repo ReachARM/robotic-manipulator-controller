@@ -18,6 +18,8 @@
 #include "ArmController/MoveAbsoluteMotor.h"
 #include "ArmController/MoveIncrementMotor.h"
 #include "ArmController/MoveBase.h"
+#include "ArmController/MoveShoulder.h"
+#include "ArmController/MoveElbow.h"
 #include "ArmController/GetArmStatus.h"
 #include "ArmController/GetMotorAngle.h"
 
@@ -42,6 +44,12 @@ namespace arm_controller {
 
         bool moveBase(ArmController::MoveBase::Request &req,
                       ArmController::MoveBase::Response &res);
+
+        bool moveShoulder(ArmController::MoveShoulder::Request &req,
+                          ArmController::MoveShoulder::Response &res);
+
+        bool moveElbow(ArmController::MoveElbow::Request &req,
+                         ArmController::MoveElbow::Response &res);
 
         bool getArmStatus(ArmController::GetArmStatus::Request &req,
                           ArmController::GetArmStatus::Response &res);

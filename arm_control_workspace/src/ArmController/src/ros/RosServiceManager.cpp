@@ -21,6 +21,8 @@ void arm_controller::RosServiceManager::initServices(ros::NodeHandle* nodeHandle
             services.push_back(nodeHandlePtr->advertiseService("move_relative_tool",&RosServiceManager::moveRelativeTool, this));
             services.push_back(nodeHandlePtr->advertiseService("move_increment_motor",&RosServiceManager::moveIncrementMotor, this));
             services.push_back(nodeHandlePtr->advertiseService("move_base", &RosServiceManager::moveBase, this));
+            services.push_back(nodeHandlePtr->advertiseService("move_shoulder", &RosServiceManager::moveShoulder, this));
+            services.push_back(nodeHandlePtr->advertiseService("move_elbow", &RosServiceManager::moveElbow, this));
             services.push_back(nodeHandlePtr->advertiseService("get_arm_status",&RosServiceManager::getArmStatus, this));
             services.push_back(nodeHandlePtr->advertiseService("get_motor_angle",&RosServiceManager::getMotorAngle, this));
             isInit = true;
@@ -79,6 +81,26 @@ bool arm_controller::RosServiceManager::moveBase(ArmController::MoveBase::Reques
     ROS_INFO("Request for moving base at angle : %f", (float)req.angle);
     if( (float)req.angle > -1 && (float) req.angle < 361 )
         controller->moveBase(static_cast<float>(req.angle));
+    else
+        ROS_INFO("Bad angle");
+    return true;
+}
+
+bool arm_controller::RosServiceManager::moveShoulder(ArmController::MoveShoulder::Request &req,
+                  ArmController::MoveShoulder::Response &res){
+    ROS_INFO("Request for moving base at angle : %f", (float)req.angle);
+    if( (float)req.angle > -1 && (float) req.angle < 361 )
+        controller->moveShoulder(static_cast<float>(req.angle));
+    else
+        ROS_INFO("Bad angle");
+    return true;
+}
+
+bool arm_controller::RosServiceManager::moveElbow(ArmController::MoveElbow::Request &req,
+               ArmController::MoveElbow::Response &res){
+    ROS_INFO("Request for moving base at angle : %f", (float)req.angle);
+    if( (float)req.angle > -1 && (float) req.angle < 361 )
+        controller->moveElbow(static_cast<float>(req.angle));
     else
         ROS_INFO("Bad angle");
     return true;

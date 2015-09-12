@@ -17,6 +17,8 @@ add_service_files(
   MoveAbsoluteMotor.srv
   MoveIncrementMotor.srv
   MoveBase.srv
+  MoveShoulder.srv
+  MoveElbow.srv
   GetArmStatus.srv
   GetMotorAngle.srv
 )
