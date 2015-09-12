@@ -66,7 +66,7 @@ void arm_controller::RosRobotStatePublisher::publishJoints() {
             elbow.stamp_ = ros::Time::now();
             elbow.frame_id_ = "joint_2";
             elbow.child_frame_id_ = "joint_3";
-            elbow.setOrigin(tf::Vector3(1,0,1));
+            elbow.setOrigin(tf::Vector3(0,0,2));
             elbow.setRotation(quat);
             tf_transforms.push_back(elbow);
 
