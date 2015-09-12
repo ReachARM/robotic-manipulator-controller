@@ -81,11 +81,15 @@ inline void arm_controller::SimMotor::setStep(const int step) {
 };
 
 inline void arm_controller::SimMotor::setCurrentAngle(const float angle) {
-    if( angle >= lowAngleLimit && angle <= highAngleLimit ){
+    ROS_INFO("current angle");
+    if( lowAngleLimit == INFINITE_BOUNDARIES && highAngleLimit == INFINITE_BOUNDARIES )
         currentAngle = angle;
-        currentStep = currentAngle/STEP_PRECISION;
+    else if( angle >= lowAngleLimit && angle <= highAngleLimit ){
+        currentAngle = angle;
+        currentStep = currentAngle/static_cast<float>(STEP_PRECISION);
     } else {
-        ROS_WARN("Cannot set angle, not within boundaries");
+        ROS_WARN("Cannot set angle, not within boundaries Angle : %f ", angle);
+        ROS_WARN("Boundaries are L: %f  H: %f ",lowAngleLimit,highAngleLimit);
     }
 };
 

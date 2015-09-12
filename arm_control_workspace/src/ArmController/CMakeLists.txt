@@ -8,6 +8,7 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
   kdl_parser
   robot_state_publisher
+  tf
 )
 
 add_service_files(

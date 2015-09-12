@@ -18,6 +18,8 @@ arm_controller::SimMotor::SimMotor(const int ID, const int highAngleLimit, const
   currentAngle(0),
   currentSpeed(0),
   currentStep(0)
-{}
+{
+    this->opened = true;
+}
 
 arm_controller::SimMotor::~SimMotor() { }

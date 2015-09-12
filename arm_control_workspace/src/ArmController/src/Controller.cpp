@@ -83,6 +83,18 @@ arm_controller::Controller::Controller(const OPERATION_MODE& mode)
             elbow_left = std::unique_ptr<SimMotor>(new SimMotor((ELBOW_LEFT_ID),783,181,177));
             elbow_right = std::unique_ptr<SimMotor>(new SimMotor((ELBOW_RIGHT_ID),783,181,177));
             wrist = std::unique_ptr<SimMotor>(new SimMotor((WRIST_ID),0,0,0));
+
+            base_joint.push_back(MOTOR_ID(BASE_LEFT_ID));
+            base_joint.push_back(MOTOR_ID(BASE_RIGHT_ID));
+
+            shoulder_joint.push_back(MOTOR_ID(SHOULDER_LEFT_ID));
+            shoulder_joint.push_back(MOTOR_ID(SHOULDER_RIGHT_ID));
+
+            elbow_joint.push_back(MOTOR_ID(ELBOW_LEFT_ID));
+            elbow_joint.push_back(MOTOR_ID(ELBOW_RIGHT_ID));
+
+            wrist_joint.push_back(MOTOR_ID(WRIST_JOINT_ID));
+
             break;
         }
     }
@@ -102,10 +114,12 @@ arm_controller::Controller::~Controller() {
 
 bool arm_controller::Controller::moveAbsoluteMotor(const Controller::MOTOR_ID& motor, const float targetAngle) {
     ROS_INFO("Moving absolute motor");
+    ROS_INFO("Target angle %f",targetAngle);
     if(motor.id<BASE_RIGHT_ID || motor.id>WRIST_ID ) {
         ROS_WARN("Motor ID is no within boundaries");
         return false;
     }
+    ROS_INFO("Right there");
     if(getMotor(motor)->isOpened())
         getMotor(motor)->setCurrentAngle(targetAngle);
     else {
@@ -203,6 +217,9 @@ const std::vector<arm_controller::Controller::MOTOR_ID>* arm_controller::Control
 bool arm_controller::Controller::moveSyncMotor(const std::vector<MOTOR_ID>& motors, const float angle) {
     switch(currentOperationMode){
         case(SIMULATION_MODE):{
+            for(auto&& id : motors){
+                getMotor(id)->setCurrentAngle(angle);
+            }
             break;
         }
         case(AX12A_MODE):{

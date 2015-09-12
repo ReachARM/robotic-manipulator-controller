@@ -63,7 +63,8 @@ int main(int argc, char** argv){
     rosServiceManager.initServices(&n);
 
     ROS_INFO("Starting the robot state publisher");
-    arm_controller::RosRobotStatePublisher robotStatePublisher("...",&controller); // TODO FIXME with relative path
+    arm_controller::RosRobotStatePublisher robotStatePublisher("/home/mojo/robot.urdf",&controller); // TODO FIXME with relative path
+    robotStatePublisher.initPublisher();
 
     ros::spin();
     return 0;

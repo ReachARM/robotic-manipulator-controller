@@ -144,9 +144,12 @@ float arm_controller::Controller::getMotorCurrentAngle(const Controller::MOTOR_I
 }
 
 float arm_controller::Controller::getJointCurrentAngle(const JOINT_ID &joint) const {
-    auto angle_left_servo = getMotorCurrentAngle(getJoint(joint)->at(0));
-    auto angle_right_servo = getMotorCurrentAngle(getJoint(joint)->at(1));
-    return static_cast<float>((angle_left_servo+angle_right_servo)/2.0);
+    auto vector = getJoint(joint);
+    auto angle = 0;
+    for( auto i = 0; i < vector->size(); ++i) {
+        angle += getMotorCurrentAngle(getJoint(joint)->at(i));
+    }
+    return static_cast<float>(angle/vector->size());
 }
 
 void arm_controller::Controller::resetError() {

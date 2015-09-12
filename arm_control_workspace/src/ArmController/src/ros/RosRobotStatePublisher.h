@@ -15,6 +15,9 @@
 
 #include <kdl_parser/kdl_parser.hpp>
 #include <robot_state_publisher/robot_state_publisher.h>
+#include "tf/transform_broadcaster.h"
+
+#include <math.h>
 
 #include <thread>
 #include <string>
@@ -49,7 +52,7 @@ namespace arm_controller {
 
         const arm_controller::Controller* controller;
 
-        std::unique_ptr<robot_state_publisher::RobotStatePublisher> publisher;
+        std::unique_ptr<tf::TransformBroadcaster> publisher;
         std::thread publishingThread;
 
     };
