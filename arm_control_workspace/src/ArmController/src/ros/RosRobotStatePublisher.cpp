@@ -83,12 +83,14 @@ void arm_controller::RosRobotStatePublisher::publishJoints() {
 void arm_controller::RosRobotStatePublisher::initPublisher() {
     if(!isInit) {
         ROS_INFO("KDL tree successfully constructed");
+        isInit = true;
         publisher = std::unique_ptr<tf::TransformBroadcaster>(
                 new tf::TransformBroadcaster());
         publish = true;
+        
         publishingThread = std::thread(&arm_controller::RosRobotStatePublisher::publishJoints, this);
         publishingThread.detach();
-        isInit = true;
+
         ROS_INFO("Publisher successfully initialized");
     } else {
         ROS_WARN("Publisher is already initialized");
