@@ -78,10 +78,10 @@ arm_controller::Controller::Controller(const OPERATION_MODE& mode)
             ROS_INFO("Initializing simulation mode");
             base_left = std::unique_ptr<SimMotor>(new SimMotor((BASE_LEFT_ID),-1,-1,77));
             base_right = std::unique_ptr<SimMotor>(new SimMotor((BASE_RIGHT_ID),-1,-1,77));
-            shoulder_left = std::unique_ptr<SimMotor>(new SimMotor((SHOULDER_LEFT_ID),783,181,177));
-            shoulder_right = std::unique_ptr<SimMotor>(new SimMotor((SHOULDER_RIGHT_ID),783,181,177));
-            elbow_left = std::unique_ptr<SimMotor>(new SimMotor((ELBOW_LEFT_ID),783,181,177));
-            elbow_right = std::unique_ptr<SimMotor>(new SimMotor((ELBOW_RIGHT_ID),783,181,177));
+            shoulder_left = std::unique_ptr<SimMotor>(new SimMotor((SHOULDER_LEFT_ID),-1,-1,177));
+            shoulder_right = std::unique_ptr<SimMotor>(new SimMotor((SHOULDER_RIGHT_ID),-1,-1,177));
+            elbow_left = std::unique_ptr<SimMotor>(new SimMotor((ELBOW_LEFT_ID),-1,-1,177));
+            elbow_right = std::unique_ptr<SimMotor>(new SimMotor((ELBOW_RIGHT_ID),-1,-1,177));
             wrist = std::unique_ptr<SimMotor>(new SimMotor((WRIST_ID),0,0,0));
 
             base_joint.push_back(MOTOR_ID(BASE_LEFT_ID));

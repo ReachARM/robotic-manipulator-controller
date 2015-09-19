@@ -51,7 +51,7 @@ void arm_controller::RosRobotStatePublisher::publishJoints() {
             tf_transforms.push_back(base);
 
             quat = tf::Quaternion();
-            quat.setRPY(0,0,controller->getJointCurrentAngle(Controller::JOINT_ID(Controller::SHOULDER_JOINT_ID)) * M_PI / 180.000F);
+            quat.setRPY(0,controller->getJointCurrentAngle(Controller::JOINT_ID(Controller::SHOULDER_JOINT_ID)) * M_PI / 180.000F,0);
             shoulder = tf::StampedTransform();
             shoulder.stamp_ = ros::Time::now();
             shoulder.frame_id_ = "joint_1";
@@ -61,7 +61,7 @@ void arm_controller::RosRobotStatePublisher::publishJoints() {
             tf_transforms.push_back(shoulder);
 
             quat = tf::Quaternion();
-            quat.setRPY(0,0,controller->getJointCurrentAngle(Controller::JOINT_ID(Controller::ELBOW_JOINT_ID)) * M_PI / 180.000F);
+            quat.setRPY(0,controller->getJointCurrentAngle(Controller::JOINT_ID(Controller::ELBOW_JOINT_ID)) * M_PI / 180.000F,0);
             elbow = tf::StampedTransform();
             elbow.stamp_ = ros::Time::now();
             elbow.frame_id_ = "joint_2";
@@ -82,18 +82,14 @@ void arm_controller::RosRobotStatePublisher::publishJoints() {
 
 void arm_controller::RosRobotStatePublisher::initPublisher() {
     if(!isInit) {
-        if (!kdl_parser::treeFromFile(urdfPath, robotKDLTree)) {
-            ROS_ERROR("Failed to construct kdl tree");
-        } else {
-            ROS_INFO("KDL tree successfully constructed");
-            publisher = std::unique_ptr<tf::TransformBroadcaster>(
-                    new tf::TransformBroadcaster());
-            publish = true;
-            publishingThread = std::thread(&arm_controller::RosRobotStatePublisher::publishJoints, this);
-            publishingThread.detach();
-            isInit = true;
-            ROS_INFO("Publisher successfully initialized");
-        }
+        ROS_INFO("KDL tree successfully constructed");
+        publisher = std::unique_ptr<tf::TransformBroadcaster>(
+                new tf::TransformBroadcaster());
+        publish = true;
+        publishingThread = std::thread(&arm_controller::RosRobotStatePublisher::publishJoints, this);
+        publishingThread.detach();
+        isInit = true;
+        ROS_INFO("Publisher successfully initialized");
     } else {
         ROS_WARN("Publisher is already initialized");
     }
